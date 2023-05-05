@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Dashboard - Smart Facial</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+        <!-- Favicons -->
+        <link href="{{ url_for('static', filename='img/favicon.png') }}" rel="icon">
+        <link href="{{ url_for('static', filename='img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+        <!-- Google Fonts -->
+        <link href="https://fonts.gstatic.com" rel="preconnect">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+        <!-- Vendor CSS Files -->
+        <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendor/quill/quill.snow.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendor/quill/quill.bubble.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static',filename='vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='vendor/simple-datatables/style.css') }}">
+        <!-- Template Main CSS File -->
+        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    </head>
+    <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="/login/home" class="logo d-flex align-items-center">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="">
+                <span class="d-none d-lg-block">SmartFacial</span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div><!-- End Logo -->
+        <div class="search-bar">
+            <form class="search-form d-flex align-items-center" method="POST" action="#">
+                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+            </form>
+        </div><!-- End Search Bar -->
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+                <li class="nav-item d-block d-lg-none">
+                    <a class="nav-link nav-icon search-bar-toggle " href="#">
+                        <i class="bi bi-search"></i>
+                    </a>
+                </li><!-- End Search Icon-->
+                <li class="nav-item dropdown">
+                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-bell"></i>
+                        <span class="badge bg-primary badge-number">4</span>
+                    </a><!-- End Notification Icon -->
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                        <li class="dropdown-header">
+                            You have 4 new notifications
+                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="notification-item">
+                            <i class="bi bi-exclamation-circle text-warning"></i>
+                            <div>
+                                <h4>Lorem Ipsum</h4>
+                                <p>Quae dolorem earum veritatis oditseno</p>
+                                <p>30 min. ago</p>
+                            </div>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="notification-item">
+                            <i class="bi bi-x-circle text-danger"></i>
+                            <div>
+                                <h4>Atque rerum nesciunt</h4>
+                                <p>Quae dolorem earum veritatis oditseno</p>
+                                <p>1 hr. ago</p>
+                            </div>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="notification-item">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <div>
+                                <h4>Sit rerum fuga</h4>
+                                <p>Quae dolorem earum veritatis oditseno</p>
+                                <p>2 hrs. ago</p>
+                            </div>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="notification-item">
+                            <i class="bi bi-info-circle text-primary"></i>
+                            <div>
+                                <h4>Dicta reprehenderit</h4>
+                                <p>Quae dolorem earum veritatis oditseno</p>
+                                <p>4 hrs. ago</p>
+                            </div>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="dropdown-footer">
+                            <a href="#">Show all notifications</a>
+                        </li>
+                    </ul><!-- End Notification Dropdown Items -->
+                </li><!-- End Notification Nav -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-chat-left-text"></i>
+                        <span class="badge bg-success badge-number">3</span>
+                    </a><!-- End Messages Icon -->
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+                        <li class="dropdown-header">
+                            You have 3 new messages
+                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="message-item">
+                            <a href="#">
+                                <img src="{{ url_for('static', filename='img/messages-1.jpg') }}" alt="" class="rounded-circle">
+                                <div>
+                                    <h4>Maria Hudson</h4>
+                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                    <p>4 hrs. ago</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="message-item">
+                            <a href="#">
+                                <img src="{{ url_for('static', filename='img/messages-2.jpg') }}" alt="" class="rounded-circle">
+                                <div>
+                                    <h4>Anna Nelson</h4>
+                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                    <p>6 hrs. ago</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="message-item">
+                            <a href="#">
+                                <img src="{{ url_for('static', filename='img/messages-3.jpg') }}" alt="" class="rounded-circle">
+                                <div>
+                                    <h4>David Muldon</h4>
+                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                    <p>8 hrs. ago</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="dropdown-footer">
+                            <a href="#">Show all messages</a>
+                        </li>
+                    </ul><!-- End Messages Dropdown Items -->
+                </li><!-- End Messages Nav -->
+                <li class="nav-item dropdown pe-3">
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        <img src="{{ url_for('static', filename='img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
+                        <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+                    </a><!-- End Profile Iamge Icon -->
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6>Kevin Anderson</h6>
+                            <span>Web Designer</span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="/login/profile">
+                                <i class="bi bi-person"></i>
+                                <span>My Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                                <i class="bi bi-gear"></i>
+                                <span>Account Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                                <i class="bi bi-question-circle"></i>
+                                <span>Need Help?</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="/login">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Sign Out</span>
+                            </a>
+                        </li>
+                    </ul><!-- End Profile Dropdown Items -->
+                </li><!-- End Profile Nav -->
+            </ul>
+        </nav><!-- End Icons Navigation -->
+    </header><!-- End Header -->
+    <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+            <li class="nav-item">
+                <a class="nav-link " href="/login/home">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li><!-- End Dashboard Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-bar-chart"></i><span>Charts</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="charts-chartjs.html">
+                            <i class="bi bi-circle"></i><span>Chart.js</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="charts-apexcharts.html">
+                            <i class="bi bi-circle"></i><span>ApexCharts</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="charts-echarts.html">
+                            <i class="bi bi-circle"></i><span>ECharts</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Charts Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/login/profile">
+                    <i class="bi bi-person"></i>
+                    <span>Profile</span>
+                </a>
+            </li><!-- End Profile Page Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/login/calendar">
+                    <i class="bi bi-envelope"></i>
+                    <span>Calendar</span>
+                </a>
+            </li><!-- End Calendar Page Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/login/register">
+                    <i class="bi bi-card-list"></i>
+                    <span>Register</span>
+                </a>
+            </li><!-- End Register Page Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/login/users">
+                    <i class="bi bi-person-plus"></i>
+                    <span>User</span>
+                </a>
+            </li><!-- End User Page Nav -->
+        </ul>
+    </aside><!-- End Sidebar-->
+    <main id="main" class="main">
+        <div class="content-wrapper">
+            <!-- START PAGE CONTENT-->
+            <div class="pagetitle">
+                <h1>Calendar</h1>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/login/home">Home</a></li>
+                        <li class="breadcrumb-item">Users</li>
+                        <li class="breadcrumb-item active">Calendar</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="page-content fade-in-up">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="wrapper">
+                            <header>
+                                <p class="current-date"></p>
+                                <div class="icons">
+                                    <span id="prev" class="material-symbols-rounded"><</span>
+                                    <span id="next" class="material-symbols-rounded">></span>
+                                </div>
+                                <div class="btn-today">
+                                    <span id="today" class="btn-today">Today</span>
+                                </div>
+                            </header>
+                            <div class="calendar">
+                                <ul class="weeks">
+                                    <li>Sun</li>
+                                    <li>Mon</li>
+                                    <li>Tue</li>
+                                    <li>Wed</li>
+                                    <li>Thu</li>
+                                    <li>Fri</li>
+                                    <li>Sat</li>
+                                </ul>
+                                <ul class="days"></ul>
+                            </div>
+                        </div>
+                        <script>
+                            const todayBtn = document.getElementById("today");
+                            todayBtn.addEventListener("click", () => {
+                                date = new Date(); // set current date
+                                currYear = date.getFullYear(); // update current year
+                                currMonth = date.getMonth(); // update current month
+                                renderCalendar(); // re-render calendar
+                            });
+                            const daysTag = document.querySelector(".days"),
+                                currentDate = document.querySelector(".current-date"),
+                                prevNextIcon = document.querySelectorAll(".icons span");
+                            // getting new date, current year and month
+                            let date = new Date(),
+                                currYear = date.getFullYear(),
+                                currMonth = date.getMonth();
+                            // storing full name of all months in array
+                            const months = ["January", "February", "March", "April", "May", "June", "July",
+                                "August", "September", "October", "November", "December"];
+                            const renderCalendar = () => {
+                                let firstDayofMonth = new Date(currYear, currMonth, 1).getDay(), // getting first day of month
+                                    lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate(), // getting last date of month
+                                    lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay(), // getting last day of month
+                                    lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate(); // getting last date of previous month
+                                let liTag = "";
+                                for (let i = firstDayofMonth; i > 0; i--) { // creating li of previous month last days
+                                    liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`;
+                                }
+                                for (let i = 1; i <= lastDateofMonth; i++) { // creating li of all days of current month
+                                    // adding active class to li if the current day, month, and year matched
+                                    let isToday = i === date.getDate() && currMonth === new Date().getMonth()
+                                    && currYear === new Date().getFullYear() ? "active" : "";
+                                    liTag += `<li class="${isToday}">${i}</li>`;
+                                }
+                                for (let i = lastDayofMonth; i < 6; i++) { // creating li of next month first days
+                                    liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`
+                                }
+                                currentDate.innerText = `${months[currMonth]} ${currYear}`; // passing current mon and yr as currentDate text
+                                daysTag.innerHTML = liTag;
+                            }
+                            renderCalendar();
+                            prevNextIcon.forEach(icon => { // getting prev and next icons
+                                icon.addEventListener("click", () => { // adding click event on both icons
+                                    // if clicked icon is previous icon then decrement current month by 1 else increment it by 1
+                                    currMonth = icon.id === "prev" ? currMonth - 1 : currMonth + 1;
+                                    if(currMonth < 0 || currMonth > 11) { // if current month is less than 0 or greater than 11
+                                        // creating a new date of current year & month and pass it as date value
+                                        date = new Date(currYear, currMonth, new Date().getDate());
+                                        currYear = date.getFullYear(); // updating current year with new date year
+                                        currMonth = date.getMonth(); // updating current month with new date month
+                                    } else {
+                                        date = new Date(); // pass the current date as date value
+                                    }
+                                    renderCalendar(); // calling renderCalendar function
+                                });
+                            });
+                        </script>
+                    </div>
+                    <!-- New Event Dialog-->
+                    <div class="modal fade" id="new-event-modal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <form class="modal-content form-horizontal" action="javascript:;">
+                                <div class="modal-header bg-silver-100">
+                                    <h4 class="modal-title">New Event</h4>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Title:</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" id="new-event-title" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" id="date_1">
+                                        <label class="col-sm-2 col-form-label">Start:</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group datepicker date">
+                                                <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                                                <input class="form-control" id="new-event-start" type="text" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">End:</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group datepicker date">
+                                                <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                                                <input class="form-control" id="new-event-end" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Color:</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="new-event-color">
+                                                <option value="bg-blue">Blue</option>
+                                                <option value="bg-red">Red</option>
+                                                <option value="bg-green">Green</option>
+                                                <option value="bg-orange">Orange</option>
+                                                <option value="bg-silver">Silver</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-10 ml-sm-auto">
+                                            <label class="ui-checkbox ui-checkbox-info">
+                                                <input id="new-event-allDay" type="checkbox">
+                                                <span class="input-span"></span>All Day</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                                    <button class="btn btn-info" id="addEventButton" type="submit">Add event</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End New Event Dialog-->
+                    <!-- Event Detail Dialog-->
+                    <div class="modal fade" id="event-modal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <form class="modal-content form-horizontal" action="javascript:;">
+                                <div class="modal-header bg-silver-100">
+                                    <h4 class="modal-title">Edit Event</h4>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Title:</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control" id="event-title" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" id="date_1">
+                                        <label class="col-sm-2 col-form-label">Start:</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group datepicker date">
+                                                <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                                                <input class="form-control" id="event-start" type="text" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">End:</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-group datepicker date">
+                                                <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                                                <input class="form-control" id="event-end" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Color:</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="event-color">
+                                                <option value="bg-blue">Blue</option>
+                                                <option value="bg-red">Red</option>
+                                                <option value="bg-green">Green</option>
+                                                <option value="bg-orange">Orange</option>
+                                                <option value="bg-silver">Silver</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-10 ml-sm-auto">
+                                            <label class="ui-checkbox ui-checkbox-info">
+                                                <input id="event-allDay" type="checkbox">
+                                                <span class="input-span"></span>All Day</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-info" id="editEventButton" type="submit">Save</button>
+                                    <button class="btn btn-danger" id="deleteEventButton" type="button" data-dismiss="modal">Delete</button>
+                                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End Event Detail Dialog-->
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </main><!-- End #main -->
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer">
+        <div class="copyright">
+            &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+        </div>
+    </footer><!-- End Footer -->
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <!-- Vendor JS Files -->
+    <script src="{{ url_for('static', filename='vendor/apexcharts/apexcharts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/chart.js/chart.umd.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/echarts/echarts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/quill/quill.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/simple-datatables/simple-datatables.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/php-email-form/validate.js') }}"></script>
+    <!-- Template Main JS File -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    </body>
+</html>
