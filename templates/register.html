@@ -51,7 +51,7 @@
                                         <div class="col-12">
                                             <label for="yourEmail" class="form-label">Your Email</label>
                                             <input type="email" name="email" class="form-control" id="yourEmail" required>
-                                            <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                                            <div class="invalid-feedback">Please enter a valid Email address!</div>
                                         </div>
                                         <div class="col-12">
                                             <label for="yourUsername" class="form-label">Username</label>
@@ -73,9 +73,8 @@
                                             <div id="preview"></div>
                                         </div>
                                         <script>
-                                            // Set the maximum width and height of the preview image
-                                            const maxWidth = 20;
-                                            const maxHeight = 20;
+                                            // Set the maximum size of the preview image
+                                            const maxDimension = 120;
                                             // Get the input element
                                             const inputElement = document.getElementById("yourImage");
                                             // Add an event listener to execute when a file is selected
@@ -89,22 +88,34 @@
                                                     // Set the onload event handler
                                                     reader.onload = function() {
                                                         // Create a new image element
-                                                        const image = document.createElement("img");
+                                                        const image = new Image();
                                                         // Set the source of the image element to the contents of the file
-                                                        image.src = reader.result;
-                                                        // Set the maximum width and height of the image
-                                                        if (image.width > maxWidth) {
-                                                            image.height *= maxWidth / image.width;
-                                                            image.width = maxWidth;
-                                                        }
-                                                        if (image.height > maxHeight) {
-                                                            image.width *= maxHeight / image.height;
-                                                            image.height = maxHeight;
-                                                        }
-                                                        // Add the image element to the preview element
-                                                        const preview = document.getElementById("preview");
-                                                        preview.innerHTML = "";
-                                                        preview.appendChild(image);
+                                                        image.src = reader.result.toString();
+                                                        // Set the maximum size of the image
+                                                        image.onload = function() {
+                                                            const canvas = document.createElement("canvas");
+                                                            let width = image.width;
+                                                            let height = image.height;
+                                                            if (width > height) {
+                                                                if (width > maxDimension) {
+                                                                    height *= maxDimension / width;
+                                                                    width = maxDimension;
+                                                                }
+                                                            } else {
+                                                                if (height > maxDimension) {
+                                                                    width *= maxDimension / height;
+                                                                    height = maxDimension;
+                                                                }
+                                                            }
+                                                            canvas.width = maxDimension;
+                                                            canvas.height = maxDimension;
+                                                            const ctx = canvas.getContext("2d");
+                                                            ctx.drawImage(image, (maxDimension - width) / 2, (maxDimension - height) / 2, width, height);
+                                                            // Add the image element to the preview element
+                                                            const preview = document.getElementById("preview");
+                                                            preview.innerHTML = "";
+                                                            preview.appendChild(canvas);
+                                                        };
                                                     };
                                                     // Read the contents of the file
                                                     reader.readAsDataURL(file);
