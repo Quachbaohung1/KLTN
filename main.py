@@ -11,10 +11,10 @@ app = Flask(__name__)
 app.secret_key = 'Baohung0303'
 
 # Enter your database connection details below
-app.config['MYSQL_HOST'] = '127.0.0.1'
-app.config['MYSQL_PORT'] = 9090
-app.config['MYSQL_USER'] = 'Hungqb'
-app.config['MYSQL_PASSWORD'] = '123456'
+app.config['MYSQL_HOST'] = 'khoaluandb.cx4dxwmzciis.ap-southeast-1.rds.amazonaws.com'
+app.config['MYSQL_PORT'] = 3306
+app.config['MYSQL_USER'] = 'admin'
+app.config['MYSQL_PASSWORD'] = '1709hung2000'
 app.config['MYSQL_DB'] = 'khoaluan'
 
 # Intialize MySQL
@@ -40,18 +40,19 @@ def login():
         # If account exists in accounts table in our database
         if account:
             # Check if the account is locked
-            if account['is_active'] == 0 and (datetime.now() - account['Last_login_time']) < timedelta(minutes=1):
+            if account['Is_active'] == 0 and (datetime.now() - account['Last_login_time']) < timedelta(minutes=1):
                 msg = 'Your account has been locked!'
+                return redirect(url_for('login'))
             else:
                 # Get the stored hashed password from the account data
                 stored_password = account['Password_reset_token']
                 # Get the failed login attempts count from the account data
-                Failed_login_attempts = account['Failed_login_attemps']
+                Failed_login_attempts = account['Failed_login_attempts']
                 # Compare the hashed password input by the user with the stored hashed password
                 if hashed_password == stored_password:
                     # Reset failed login attempts and update last login time
                     cursor.execute(
-                        'UPDATE Auth_user SET Failed_login_attemps = 0, Last_login_time = %s, is_active = 1 WHERE id = %s',
+                        'UPDATE Auth_user SET Failed_login_attempts = 0, Last_login_time = %s, is_active = 1 WHERE id = %s',
                         (datetime.now(), account['id'],))
                     mysql.connection.commit()
                     # Create session data, we can access this data in other routes
@@ -63,19 +64,22 @@ def login():
                 else:
                     # Increment failed login attempts
                     Failed_login_attempts += 1
-                    cursor.execute('UPDATE Auth_user SET Failed_login_attemps = Failed_login_attemps + 1 WHERE id = %s',
+                    cursor.execute('UPDATE Auth_user SET Failed_login_attempts = Auth_user.Failed_login_attempts + 1 WHERE id = %s',
                                    (account['id'],))
                     mysql.connection.commit()
                     # Check if the account should be locked
                     if account['Failed_login_attemps'] >= 4:
                         # Lock the account
-                        cursor.execute('UPDATE Auth_user SET is_active = 0 WHERE id = %s', (account['id'],))
+                        cursor.execute('UPDATE Auth_user SET Is_active = 0 WHERE id = %s', (account['id'],))
                         mysql.connection.commit()
                         msg = 'Your account has been locked!'
+                        return redirect(url_for('login'))
                     else:
                         msg = f'Incorrect username/password! Failed login attempts: {Failed_login_attempts}'
+                        return redirect(url_for('login'))
         else:
             msg = 'Invalid username or password!'
+            return redirect(url_for('login'))
 
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg)
@@ -84,18 +88,7 @@ def login():
 def home():
 # Check if user is logged-in
     if 'loggedin' in session:
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute(
-            'select Employee.id as id, Employee.FirstName as firstname, Employee.LastName as lastname, info.jobname as job, info.departmentname as department, Employee.Age as age, Employee.Phone_no as phone_no, Employee.Email_Address as email, Employee.Address as address from Employee left join ( select Job.id as id, Job.Name as jobname, Department.Name as departmentname from Job left join Department on Job.department_id=Department.id ) as info on Employee.Job_ID=info.id')
-        account = cursor.fetchone()
-        # Get the logged-in user's first and last names
-        first_name = account['firstname']
-        last_name = account['lastname']
-        job=account['job']
-        # Combine the first and last names to form the display name
-        display_name = f'{first_name} {last_name}'
-        display_job = f'{job}'
-        return render_template('home.html', account=account, display_name=display_name,display_job=display_job)
+        return render_template('home.html')
     return redirect(url_for('login'))
 
 @app.route('/login/profile')
@@ -104,10 +97,10 @@ def profile():
     if 'loggedin' in session:
         # We need all the account info for the user, so we can display it on the profile page
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM Employee WHERE id = %s', (session['id'],))
-        account = cursor.fetchone()
+        cursor.execute('SELECT * FROM Employee WHERE Employee.id = %s', (session['id'],))
+        employee = cursor.fetchone()
         # Show the profile page with account info
-        return render_template('profile.html', account=account)
+        return render_template('profile.html', Employee=employee)
     # User is not logged-in redirect to login page
     return redirect(url_for('login'))
 
@@ -186,7 +179,6 @@ def calendar():
     if 'loggedin' in session:
         return render_template('calendar.html')
     return redirect(url_for('login'))
-
 
 if __name__ == "__main__":
     app.run(debug=True)

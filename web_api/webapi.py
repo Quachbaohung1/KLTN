@@ -4,6 +4,7 @@ import MySQLdb.cursors
 import re
 import hashlib
 from datetime import datetime, timedelta
+import pymysql
 
 app = Flask(__name__)
 
@@ -11,11 +12,8 @@ app = Flask(__name__)
 app.secret_key = 'Baohung0303'
 
 # Enter your database connection details below
-app.config['MYSQL_HOST'] = '127.0.0.1'
-app.config['MYSQL_PORT'] = 9090
-app.config['MYSQL_USER'] = 'Hungqb'
-app.config['MYSQL_PASSWORD'] = '123456'
-app.config['MYSQL_DB'] = 'khoaluan'
+db = pymysql.connect(host='khoaluandb.cx4dxwmzciis.ap-southeast-1.rds.amazonaws.com', user='admin', password='1709hung2000', database='khoaluan')
+cur = db.cursor(pymysql.cursors.DictCursor)
 
 # Intialize MySQL
 mysql = MySQL(app)
