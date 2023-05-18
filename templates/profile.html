@@ -267,14 +267,15 @@
                                         <div class="row mb-3">
                                             <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <img id="profile-image" src="{{ url_for('static', filename='img/profile-img.jpg') }}" alt="Profile">
+                                                {% if user_has_profile_image %}
+                                                    <img id="profile-image" src="{{ url_for('static', filename='img/profile-img.jpg') }}" alt="Profile">
+                                                {% else %}
+                                                    <img id="profile-image" src="{{ url_for('static', filename='img/21.jpg') }}" alt="Profile">
+                                                {% endif %}
                                                 <div class="pt-2">
                                                     <input id="upload-input" type="file" accept="image/*" style="display: none;">
                                                     <button id="upload-btn" class="btn btn-primary btn-sm" title="Upload new profile image">
                                                         <i class="bi bi-upload"></i>
-                                                    </button>
-                                                    <button id="delete-btn" class="btn btn-danger btn-sm" title="Remove my profile image">
-                                                        <i class="bi bi-trash"></i>
                                                     </button>
                                                     <script>
                                                         document.getElementById("upload-btn").addEventListener("click", function() {
@@ -303,27 +304,6 @@
                                                                 }
                                                             };
                                                             xhr.send(formData);
-                                                        });
-                                                        document.getElementById("delete-btn").addEventListener("click", function() {
-                                                            event.preventDefault();
-                                                            var confirmDelete = confirm("Are you sure you want to delete your profile image?");
-                                                            if (confirmDelete) {
-                                                                var xhr = new XMLHttpRequest();
-                                                                xhr.open("POST", "/login/profile/delete-image");
-                                                                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                                                                xhr.onreadystatechange = function() {
-                                                                    if (xhr.readyState === 4 && xhr.status === 200) {
-                                                                        var response = JSON.parse(xhr.responseText);
-                                                                        if (response.success) {
-                                                                            document.getElementById("profile-image").src = response.file_url;
-                                                                            alert("Image deleted!");
-                                                                        } else {
-                                                                            alert("Failed to delete image. Please try again.");
-                                                                        }
-                                                                    }
-                                                                };
-                                                                xhr.send();
-                                                            }
                                                         });
                                                     </script>
                                                 </div>
