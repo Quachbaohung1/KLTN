@@ -582,7 +582,7 @@
                             <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
                             <script>
                                 document.addEventListener("DOMContentLoaded", () => {
-                                    var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
+                                    const budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
                                         legend: {
                                             data: ['Allocated Budget', 'Actual Spending']
                                         },

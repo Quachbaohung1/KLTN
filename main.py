@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
+import os
 import re
 import hashlib
 from datetime import datetime, timedelta
@@ -179,6 +180,17 @@ def calendar():
     if 'loggedin' in session:
         return render_template('calendar.html')
     return redirect(url_for('login'))
+
+@app.route('/login/profile/upload-image', methods=['POST'])
+def upload_image():
+    file = request.files['file']
+    if file:
+        filename = file.filename
+        file.save(os.path.join('static/img', filename))
+        new_image_url = f"/static/img/{filename}"
+        return jsonify({'success': True, 'file_url': new_image_url})
+    else:
+        return jsonify({'success': False, 'message': 'No file selected.'})
 
 if __name__ == "__main__":
     app.run(debug=True)

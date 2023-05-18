@@ -226,9 +226,6 @@
                                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
                                 </li>
                                 <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Settings</button>
-                                </li>
-                                <li class="nav-item">
                                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
                                 </li>
                             </ul>
@@ -270,8 +267,9 @@
                                         <div class="row mb-3">
                                             <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <img src="{{ url_for('static', filename='img/profile-img.jpg') }}" alt="Profile">
+                                                <img id="profile-image" src="{{ url_for('static', filename='img/profile-img.jpg') }}" alt="Profile">
                                                 <div class="pt-2">
+                                                    <input id="upload-input" type="file" accept="image/*" style="display: none;">
                                                     <button id="upload-btn" class="btn btn-primary btn-sm" title="Upload new profile image">
                                                         <i class="bi bi-upload"></i>
                                                     </button>
@@ -280,35 +278,31 @@
                                                     </button>
                                                     <script>
                                                         document.getElementById("upload-btn").addEventListener("click", function() {
-                                                            // Tạo đối tượng input file
-                                                            var input = document.createElement("input");
-                                                            input.type = "file";
-                                                            input.accept = "image/*"; // chỉ chấp nhận file ảnh
-                                                            // Xử lý sự kiện onchange khi người dùng chọn tệp
-                                                            input.onchange = function(e) {
-                                                                var file = e.target.files[0];
-                                                                // Kiểm tra kích thước của tệp, chỉ cho phép tải lên tệp có kích thước nhỏ hơn 5MB
-                                                                if (file.size > 5 * 1024 * 1024) {
-                                                                    alert("File size exceeds 5MB. Please choose a smaller file.");
-                                                                    return;
-                                                                }
-                                                                // Tạo đối tượng FormData để đính kèm file
-                                                                var formData = new FormData();
-                                                                formData.append("file", file);
-                                                                // Tạo đối tượng XMLHttpRequest để thực hiện tải lên tệp
-                                                                var xhr = new XMLHttpRequest();
-                                                                // Xử lý sự kiện khi yêu cầu tải lên hoàn thành
-                                                                xhr.onreadystatechange = function() {
-                                                                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                                                                        // Tải lên thành công, cập nhật ảnh mới trên trang web của bạn ở đây
+                                                            event.preventDefault();
+                                                            document.getElementById("upload-input").click();
+                                                        });
+                                                        document.getElementById("upload-input").addEventListener("change", function() {
+                                                            var file = this.files[0];
+                                                            var formData = new FormData();
+                                                            formData.append("file", file);
+                                                            var xhr = new XMLHttpRequest();
+                                                            xhr.open("POST", "/login/profile/upload-image");
+                                                            xhr.onreadystatechange = function() {
+                                                                if (xhr.readyState === 4) {
+                                                                    if (xhr.status === 200) {
+                                                                        var response = JSON.parse(xhr.responseText);
+                                                                        if (response.success) {
+                                                                            document.getElementById("profile-image").src = response.file_url;
+                                                                            alert("Upload successful!");
+                                                                        } else {
+                                                                            alert("Upload failed. Please try again.");
+                                                                        }
+                                                                    } else {
+                                                                        alert("Upload failed. Please try again.");
                                                                     }
-                                                                };
-                                                                // Gửi yêu cầu tải lên đến máy chủ của bạn
-                                                                xhr.open("POST", "/upload-image");
-                                                                xhr.send(formData);
+                                                                }
                                                             };
-                                                            // Mở cửa sổ chọn tệp
-                                                            input.click();
+                                                            xhr.send(formData);
                                                         });
                                                         document.getElementById("delete-btn").addEventListener("click", function() {
                                                             // Hiển thị hộp thoại xác nhận
@@ -409,43 +403,6 @@
                                             <button type="submit" class="btn btn-primary">Save Changes</button>
                                         </div>
                                     </form><!-- End Profile Edit Form -->
-                                </div>
-                                <div class="tab-pane fade pt-3" id="profile-settings">
-                                    <!-- Settings Form -->
-                                    <form>
-                                        <div class="row mb-3">
-                                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="changesMade" checked>
-                                                    <label class="form-check-label" for="changesMade">
-                                                        Changes made to your account
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="newProducts" checked>
-                                                    <label class="form-check-label" for="newProducts">
-                                                        Information on new products and services
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="proOffers">
-                                                    <label class="form-check-label" for="proOffers">
-                                                        Marketing and promo offers
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
-                                                    <label class="form-check-label" for="securityNotify">
-                                                        Security alerts
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                                        </div>
-                                    </form><!-- End settings Form -->
                                 </div>
                                 <div class="tab-pane fade pt-3" id="profile-change-password">
                                     <!-- Change Password Form -->
