@@ -192,5 +192,17 @@ def upload_image():
     else:
         return jsonify({'success': False, 'message': 'No file selected.'})
 
+@app.route('/login/profile/delete-image', methods=['POST'])
+def delete_image():
+    # Lấy tên tệp tin ảnh từ yêu cầu POST
+    filename = request.form.get('filename')
+    if filename:
+        file_path = os.path.join('static/img', filename)
+        if os.path.exists(file_path):
+            # Xóa tệp tin ảnh
+            os.remove(file_path)
+            return jsonify({'success': True})
+    return jsonify({'success': False, 'message': 'Image not found or unable to delete.'})
+
 if __name__ == "__main__":
     app.run(debug=True)

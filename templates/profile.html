@@ -305,19 +305,21 @@
                                                             xhr.send(formData);
                                                         });
                                                         document.getElementById("delete-btn").addEventListener("click", function() {
-                                                            // Hiển thị hộp thoại xác nhận
+                                                            event.preventDefault();
                                                             var confirmDelete = confirm("Are you sure you want to delete your profile image?");
-                                                            // Nếu người dùng xác nhận xóa ảnh
                                                             if (confirmDelete) {
-                                                                // Gửi yêu cầu xóa ảnh đến máy chủ của bạn bằng AJAX
                                                                 var xhr = new XMLHttpRequest();
-                                                                xhr.open("POST", "/delete-image", true);
+                                                                xhr.open("POST", "/login/profile/delete-image");
                                                                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                                                                 xhr.onreadystatechange = function() {
-                                                                    if (xhr.readyState == 4 && xhr.status == 200) {
-                                                                        // Cập nhật trang web của bạn để hiển thị ảnh mới
-                                                                        // Ví dụ:
-                                                                        document.getElementById("profile-image").src = "/new-profile-image.jpg";
+                                                                    if (xhr.readyState === 4 && xhr.status === 200) {
+                                                                        var response = JSON.parse(xhr.responseText);
+                                                                        if (response.success) {
+                                                                            document.getElementById("profile-image").src = response.file_url;
+                                                                            alert("Image deleted!");
+                                                                        } else {
+                                                                            alert("Failed to delete image. Please try again.");
+                                                                        }
                                                                     }
                                                                 };
                                                                 xhr.send();
