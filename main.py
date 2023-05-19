@@ -168,10 +168,7 @@ def register():
 def load_users():
     # Check if user is logged-in
     if 'loggedin' in session:
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('select Employee.id as id, Employee.FirstName as firstname, Employee.LastName as lastname, info.jobname as job, info.departmentname as department, Employee.Age as age, Employee.Phone_no as phone_no, Employee.Email_Address as email, Employee.Address as address from Employee left join ( select Job.id as id, Job.Name as jobname, Department.Name as departmentname from Job left join Department on Job.department_id=Department.id ) as info on Employee.Job_ID=info.id')
-        employee = cursor.fetchall()
-        return render_template('user.html', employee=employee)
+        return render_template('user.html')
     return redirect(url_for('login'))
 
 @app.route('/login/calendar')
@@ -180,6 +177,14 @@ def calendar():
     if 'loggedin' in session:
         return render_template('calendar.html')
     return redirect(url_for('login'))
+
+@app.route('/login/chart')
+def chart():
+    # Check if user is logged-in
+    if 'loggedin' in session:
+        return render_template('charts-apexcharts.html')
+    return redirect(url_for('login'))
+
 
 @app.route('/login/profile/upload-image', methods=['POST'])
 def upload_image():
