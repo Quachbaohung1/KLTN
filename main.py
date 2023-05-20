@@ -5,11 +5,10 @@ import os
 import re
 import hashlib
 from datetime import datetime, timedelta
+from flask_login import LoginManager, UserMixin, login_user, current_user, login_required
+from flask_principal import Principal, Permission, identity_loaded, UserNeed, RoleNeed
 
 app = Flask(__name__)
-
-# Change this to your secret key (can be anything, it's for extra protection)
-app.secret_key = 'Baohung0303'
 
 # Enter your database connection details below
 app.config['MYSQL_HOST'] = 'khoaluandb.cx4dxwmzciis.ap-southeast-1.rds.amazonaws.com'
@@ -17,11 +16,54 @@ app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_USER'] = 'admin'
 app.config['MYSQL_PASSWORD'] = '1709hung2000'
 app.config['MYSQL_DB'] = 'khoaluan'
+app.config['SECRET_KEY'] = 'Baohung0303'
 
 # Intialize MySQL
 mysql = MySQL(app)
 
+# Khởi tạo Flask-Login
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'  # Đường dẫn đến trang đăng nhập
 
+# Khởi tạo Flask-Principal
+principal = Principal(app)
+
+# Định nghĩa model User (implements UserMixin) và hàm load_user
+class User(UserMixin):
+    def __init__(self, id, username, password, is_admin=False, is_manager=False):
+        self.id = id
+        self.username = username
+        self.password = password
+        self.is_admin = is_admin
+        self.is_manager = is_manager
+
+# Giả định có danh sách người dùng
+users = [
+    User(1, 'admin', 'admin', is_admin=True),
+    User(2, 'manager', 'manager', is_manager=True),
+    User(3, 'user', 'user')
+]
+
+@login_manager.user_loader
+def load_user(user_id):
+    # Hàm load_user để tải đối tượng User tương ứng với user_id
+    for user in users:
+        if user.id == int(user_id):
+            return user
+    return None
+
+@identity_loaded.connect_via(app)
+def on_identity_loaded(sender, identity):
+    # Xác định vai trò của người dùng trong identity
+    if current_user.is_authenticated:
+        if current_user.is_admin:
+            identity.provides.add(RoleNeed('Admin'))
+        if current_user.is_manager:
+            identity.provides.add(RoleNeed('Quản lý'))
+        if not current_user.is_admin and not current_user.is_manager:
+            identity.provides.add(RoleNeed('Người dùng'))
+
+# Định nghĩa các tuyến đường và phân quyền
 @app.route('/login/', methods=["GET", "POST"])
 def login():
     # Output message if something goes wrong...
@@ -93,6 +135,7 @@ def home():
     return redirect(url_for('login'))
 
 @app.route('/login/profile')
+@login_required
 def profile():
     # Check if user is logged-in
     if 'loggedin' in session:
@@ -165,13 +208,22 @@ def register():
     return render_template('register.html', msg=msg)
 
 @app.route('/login/users')
+@login_required
 def load_users():
     # Check if user is logged-in
     if 'loggedin' in session:
         return render_template('user.html')
     return redirect(url_for('login'))
 
+# Các hàm hỗ trợ
+def get_managed_employees(manager_id):
+    # Hàm này để lấy danh sách nhân viên do manager quản lý
+    # Thực hiện truy vấn vào cơ sở dữ liệu hoặc xử lý logic tương ứng
+    # và trả về danh sách nhân viên
+    pass
+
 @app.route('/login/calendar')
+@login_required
 def calendar():
     # Check if user is logged-in
     if 'loggedin' in session:
@@ -179,6 +231,7 @@ def calendar():
     return redirect(url_for('login'))
 
 @app.route('/login/chart')
+@login_required
 def chart():
     # Check if user is logged-in
     if 'loggedin' in session:
