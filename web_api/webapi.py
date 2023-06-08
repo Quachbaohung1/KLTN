@@ -93,7 +93,7 @@ def home():
         # Combine the first and last names to form the display name
         display_name = f'{first_name} {last_name}'
         display_job = f'{job}'
-        return render_template('home.html', account=account, display_name=display_name,display_job=display_job)
+        return render_template('admin_home.html', account=account, display_name=display_name,display_job=display_job)
     return redirect(url_for('login'))
 
 @app.route('/login/profile')

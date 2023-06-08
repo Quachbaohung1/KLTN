@@ -1,12 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, abort
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import os
 import re
 import hashlib
 from datetime import datetime, timedelta
-from flask_login import LoginManager, UserMixin, login_user, current_user, login_required
-from flask_principal import Principal, Permission, identity_loaded, UserNeed, RoleNeed
 
 app = Flask(__name__)
 
@@ -20,48 +18,6 @@ app.config['SECRET_KEY'] = 'Baohung0303'
 
 # Intialize MySQL
 mysql = MySQL(app)
-
-# Khởi tạo Flask-Login
-login_manager = LoginManager(app)
-login_manager.login_view = 'login'  # Đường dẫn đến trang đăng nhập
-
-# Khởi tạo Flask-Principal
-principal = Principal(app)
-
-# Định nghĩa model User (implements UserMixin) và hàm load_user
-class User(UserMixin):
-    def __init__(self, id, username, password, is_admin=False, is_manager=False):
-        self.id = id
-        self.username = username
-        self.password = password
-        self.is_admin = is_admin
-        self.is_manager = is_manager
-
-# Giả định có danh sách người dùng
-users = [
-    User(1, 'admin', 'admin', is_admin=True),
-    User(2, 'manager', 'manager', is_manager=True),
-    User(3, 'user', 'user')
-]
-
-@login_manager.user_loader
-def load_user(user_id):
-    # Hàm load_user để tải đối tượng User tương ứng với user_id
-    for user in users:
-        if user.id == int(user_id):
-            return user
-    return None
-
-@identity_loaded.connect_via(app)
-def on_identity_loaded(sender, identity):
-    # Xác định vai trò của người dùng trong identity
-    if current_user.is_authenticated:
-        if current_user.is_admin:
-            identity.provides.add(RoleNeed('Admin'))
-        if current_user.is_manager:
-            identity.provides.add(RoleNeed('Quản lý'))
-        if not current_user.is_admin and not current_user.is_manager:
-            identity.provides.add(RoleNeed('Người dùng'))
 
 # Định nghĩa các tuyến đường và phân quyền
 @app.route('/login/', methods=["GET", "POST"])
@@ -102,6 +58,7 @@ def login():
                     session['loggedin'] = True
                     session['id'] = account['id']
                     session['username'] = account['username']
+                    session['Employee_id'] = account['Employee_id']  # Lưu trữ vai trò của người dùng
                     # Redirect to home page
                     return redirect(url_for('home'))
                 else:
@@ -111,7 +68,7 @@ def login():
                                    (account['id'],))
                     mysql.connection.commit()
                     # Check if the account should be locked
-                    if account['Failed_login_attemps'] >= 4:
+                    if account['Failed_login_attempts'] >= 4:
                         # Lock the account
                         cursor.execute('UPDATE Auth_user SET Is_active = 0 WHERE id = %s', (account['id'],))
                         mysql.connection.commit()
@@ -127,15 +84,40 @@ def login():
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg)
 
-@app.route('/login/home')
-def home():
-# Check if user is logged-in
-    if 'loggedin' in session:
-        return render_template('home.html')
+@app.route('/login/admin/home')
+def admin_home():
+    if 'loggedin' in session and session['Employee_id'] == 3:
+        # Người dùng đã đăng nhập và có vai trò admin
+        # Thực hiện các tác vụ tương ứng với màn hình dashboard của admin
+        return render_template('admin_home.html')
+    else:
+        # Người dùng không có quyền truy cập vào màn hình này
+        return abort(403)
+    return redirect(url_for('login'))
+
+@app.route('/login/user/home')
+def user_home():
+    if 'loggedin' in session and session['Employee_id'] == 1:
+        # Người dùng đã đăng nhập và có vai trò admin
+        # Thực hiện các tác vụ tương ứng với màn hình dashboard của admin
+        return render_template('admin_home.html')
+    else:
+        # Người dùng không có quyền truy cập vào màn hình này
+        return abort(403)
+    return redirect(url_for('login'))
+
+@app.route('/login/manager/home')
+def manager_home():
+    if 'loggedin' in session and session['Employee_id'] == 2:
+        # Người dùng đã đăng nhập và có vai trò admin
+        # Thực hiện các tác vụ tương ứng với màn hình dashboard của admin
+        return render_template('admin_home.html')
+    else:
+        # Người dùng không có quyền truy cập vào màn hình này
+        return abort(403)
     return redirect(url_for('login'))
 
 @app.route('/login/profile')
-@login_required
 def profile():
     # Check if user is logged-in
     if 'loggedin' in session:
@@ -208,7 +190,6 @@ def register():
     return render_template('register.html', msg=msg)
 
 @app.route('/login/users')
-@login_required
 def load_users():
     # Check if user is logged-in
     if 'loggedin' in session:
@@ -223,7 +204,6 @@ def get_managed_employees(manager_id):
     pass
 
 @app.route('/login/calendar')
-@login_required
 def calendar():
     # Check if user is logged-in
     if 'loggedin' in session:
@@ -231,7 +211,6 @@ def calendar():
     return redirect(url_for('login'))
 
 @app.route('/login/chart')
-@login_required
 def chart():
     # Check if user is logged-in
     if 'loggedin' in session:
