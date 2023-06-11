@@ -2,9 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import os
-import re
+import pandas as pd
 import hashlib
 from datetime import datetime, timedelta
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -58,7 +59,7 @@ def login():
                     session['loggedin'] = True
                     session['id'] = account['id']
                     session['username'] = account['username']
-                    session['Employee_id'] = account['Employee_id']  # Lưu trữ vai trò của người dùng
+                    session['RoleID'] = account['RoleID']  # Lưu trữ vai trò của người dùng
                     # Redirect to home page
                     return redirect(url_for('home'))
                 else:
@@ -80,42 +81,27 @@ def login():
         else:
             msg = 'Invalid username or password!'
             return redirect(url_for('login'))
-
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg)
 
-@app.route('/login/admin/home')
-def admin_home():
-    if 'loggedin' in session and session['Employee_id'] == 3:
+@app.route('/login/home')
+def home():
+    if 'loggedin' in session and session['RoleID'] == 3:
         # Người dùng đã đăng nhập và có vai trò admin
         # Thực hiện các tác vụ tương ứng với màn hình dashboard của admin
         return render_template('admin_home.html')
+    elif 'loggedin' in session and session['RoleID'] == 1:
+        # Người dùng đã đăng nhập và có vai trò user
+        # Thực hiện các tác vụ tương ứng với màn hình dashboard của user
+        return render_template('user_home.html')
+    elif 'loggedin' in session and session['RoleID'] == 2:
+        # Người dùng đã đăng nhập và có vai trò user
+        # Thực hiện các tác vụ tương ứng với màn hình dashboard của user
+        return render_template('manage_home.html')
     else:
         # Người dùng không có quyền truy cập vào màn hình này
-        return abort(403)
-    return redirect(url_for('login'))
+        abort(403)
 
-@app.route('/login/user/home')
-def user_home():
-    if 'loggedin' in session and session['Employee_id'] == 1:
-        # Người dùng đã đăng nhập và có vai trò admin
-        # Thực hiện các tác vụ tương ứng với màn hình dashboard của admin
-        return render_template('admin_home.html')
-    else:
-        # Người dùng không có quyền truy cập vào màn hình này
-        return abort(403)
-    return redirect(url_for('login'))
-
-@app.route('/login/manager/home')
-def manager_home():
-    if 'loggedin' in session and session['Employee_id'] == 2:
-        # Người dùng đã đăng nhập và có vai trò admin
-        # Thực hiện các tác vụ tương ứng với màn hình dashboard của admin
-        return render_template('admin_home.html')
-    else:
-        # Người dùng không có quyền truy cập vào màn hình này
-        return abort(403)
-    return redirect(url_for('login'))
 
 @app.route('/login/profile')
 def profile():
@@ -125,10 +111,15 @@ def profile():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM Employee WHERE Employee.id = %s', (session['id'],))
         employee = cursor.fetchone()
-        # Show the profile page with account info
-        return render_template('profile.html', Employee=employee)
+        if employee:
+            # Show the profile page with account info
+            return render_template('profile.html', Employee=employee)
+        else:
+            # Employee not found in the database
+            abort(403)
     # User is not logged-in redirect to login page
     return redirect(url_for('login'))
+
 
 # Get the maximum employee_id in the database
 def get_max_employee_id(cursor):
@@ -146,7 +137,7 @@ def register():
         username = request.form['username']
         # Hash password using SHA256
         password = request.form['password']
-        confirm_password = request.form['confirm-password']
+        RoleID = request.form['RoleID']
         is_active = 1
         # Get the maximum employee_id in the database
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -163,24 +154,10 @@ def register():
         # If account exists show error and validation checks
         if account:
             msg = 'Account already exists!'
-        elif not re.match(r'[A-Za-z0-9]+', username):
-            msg = 'Username must contain only characters and numbers!'
-        elif not username or not password:
-            msg = 'Please fill out the form!'
-        elif password != confirm_password:
-            msg = 'Passwords do not match!'
-        elif len(password) < 8:
-            msg = 'Password must be at least 8 characters long!'
-        elif not any(char.isdigit() for char in password):
-            msg = 'Password must contain at least one number!'
-        elif not any(char.isupper() for char in password):
-            msg = 'Password must contain at least one uppercase letter!'
-        elif not any(char.islower() for char in password):
-            msg = 'Password must contain at least one lowercase letter!'
         else:
             # Account doesn't exist and the form data is valid, now insert new account into accounts table
-            cursor.execute('INSERT INTO Auth_user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s)',
-                (username, password, employee_id, is_active, failed_login_attempts, last_login_time, password_reset_token,))
+            cursor.execute('INSERT INTO Auth_user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)',
+                (username, password, employee_id, is_active, failed_login_attempts, last_login_time, password_reset_token, RoleID,))
             mysql.connection.commit()
             msg = 'You have successfully registered!'
     elif request.method == "POST":
@@ -193,7 +170,7 @@ def register():
 def load_users():
     # Check if user is logged-in
     if 'loggedin' in session:
-        return render_template('user.html')
+        return render_template('Test.html')
     return redirect(url_for('login'))
 
 # Các hàm hỗ trợ
@@ -228,6 +205,29 @@ def upload_image():
         return jsonify({'success': True, 'file_url': new_image_url})
     else:
         return jsonify({'success': False, 'message': 'No file selected.'})
+
+@app.route('/login/users/upload_contacts', methods=['POST'])
+def upload_contacts():
+    file = request.files['file']
+    if file:
+        filename = file.filename
+        file_path = os.path.join('static/img', secure_filename(filename))
+        file.save(file_path)
+        try:
+            if filename.endswith('.csv'):
+                df = pd.read_csv(file_path)
+            elif filename.endswith('.xlsx') or filename.endswith('.xls'):
+                df = pd.read_excel(file_path)
+            else:
+                os.remove(file_path)
+                return jsonify({'success': False, 'message': 'Unsupported file format.'})
+            return jsonify({'success': True, 'message': 'File uploaded and processed successfully.'})
+        except Exception as e:
+            os.remove(file_path)
+            return jsonify({'success': False, 'message': 'Error processing file.', 'error': str(e)})
+    else:
+        return jsonify({'success': False, 'message': 'No file selected.'})
+
 
 if __name__ == "__main__":
     app.run(debug=True)

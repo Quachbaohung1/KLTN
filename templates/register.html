@@ -67,6 +67,15 @@
                                             <div class="invalid-feedback">Please enter your password!</div>
                                         </div>
                                         <div class="col-12">
+                                            <label for="yourRole" class="form-label">Role</label>
+                                            <select name="role" class="form-select" id="yourRole" required>
+                                                <option value="3">Admin</option>
+                                                <option value="1">User</option>
+                                                <option value="2">Manager</option>
+                                            </select>
+                                            <div class="invalid-feedback">Please select a role!</div>
+                                        </div>
+                                        <div class="col-12">
                                             <label for="yourImage" class="form-label">Upload Image</label>
                                             <input type="file" name="image" class="form-control" id="yourImage" required>
                                             <div class="invalid-feedback">Please upload an image!</div>
