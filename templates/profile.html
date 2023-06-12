@@ -204,6 +204,7 @@
                                                     <button id="upload-btn" class="btn btn-primary btn-sm" title="Upload new profile image">
                                                         <i class="bi bi-upload"></i>
                                                     </button>
+                                                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
                                                     <script>
                                                         document.getElementById("upload-btn").addEventListener("click", function() {
                                                             event.preventDefault();
@@ -221,12 +222,24 @@
                                                                         var response = JSON.parse(xhr.responseText);
                                                                         if (response.success) {
                                                                             document.getElementById("profile-image").src = response.file_url;
-                                                                            alert("Upload successful!");
+                                                                            Swal.fire({
+                                                                                icon: 'success',
+                                                                                title: 'Upload successful!',
+                                                                                text: 'The file has been uploaded and processed successfully.'
+                                                                            });
                                                                         } else {
-                                                                            alert("Upload failed. Please try again.");
+                                                                            Swal.fire({
+                                                                                icon: 'error',
+                                                                                title: 'Upload failed',
+                                                                                text: 'An error occurred while uploading the file. Please try again.'
+                                                                            });
                                                                         }
                                                                     } else {
-                                                                        alert("Upload failed. Please try again.");
+                                                                        Swal.fire({
+                                                                            icon: 'error',
+                                                                            title: 'Upload failed',
+                                                                            ext: 'An error occurred while uploading the file. Please try again.'
+                                                                        });
                                                                     }
                                                                 }
                                                             };

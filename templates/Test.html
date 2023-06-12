@@ -670,47 +670,52 @@
                                     <a href="javascript:void(0)" class="list-group-item" id="importButton">
                                         <span class="badge badge-info m-r-10"><i class="ti-import"></i></span> Import Contacts
                                     </a>
-                                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                    <input type="file" id="upload-input" style="display: none;">
+                                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
                                     <script>
-                                        $(document).ready(function() {
-                                            // Bắt sự kiện khi người dùng nhấp vào nút "Import Contacts"
-                                            $('#importButton').click(function() {
-                                                // Tạo một đối tượng input[type="file"] ẩn
-                                                var fileInput = $('<input type="file">').hide();
-                                                // Gắn input[type="file"] vào body của trang
-                                                $('body').append(fileInput);
-                                                // Bắt sự kiện khi người dùng chọn file
-                                                fileInput.change(function() {
-                                                    var file = fileInput.prop('files')[0];
-                                                    var formData = new FormData();
-                                                    formData.append('file', file);
-                                                    // Gửi yêu cầu POST tới endpoint 'upload_contacts' để tải file lên server
-                                                    $.ajax({
-                                                        url: '/login/users/upload_contacts',
-                                                        type: 'POST',
-                                                        data: formData,
-                                                        processData: false,
-                                                        contentType: false,
-                                                        success: function(response) {
-                                                            // Xử lý phản hồi từ server (nếu cần)
-                                                            console.log(response);
-                                                        },
-                                                        error: function(xhr, status, error) {
-                                                            // Xử lý lỗi (nếu có)
-                                                            console.log(error);
+                                        document.getElementById("importButton").addEventListener("click", function() {
+                                            event.preventDefault();
+                                            document.getElementById("upload-input").click();
+                                        });
+                                        document.getElementById("upload-input").addEventListener("change", function() {
+                                            var file = this.files[0];
+                                            var formData = new FormData();
+                                            formData.append("file", file);
+                                            var xhr = new XMLHttpRequest();
+                                            xhr.open("POST", "/login/users/upload_contacts");
+                                            xhr.onreadystatechange = function() {
+                                                if (xhr.readyState === 4) {
+                                                    if (xhr.status === 200) {
+                                                        var response = JSON.parse(xhr.responseText);
+                                                        if (response.success) {
+                                                            Swal.fire({
+                                                                icon: 'success',
+                                                                title: 'Upload successful!',
+                                                                text: 'The file has been uploaded and processed successfully.'
+                                                            });
+                                                        } else {
+                                                            Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'Upload failed',
+                                                                text: 'An error occurred while uploading the file. Please try again.'
+                                                            });
                                                         }
-                                                    });
-                                                    // Xóa đối tượng input[type="file"]
-                                                    fileInput.remove();
-                                                });
-                                                // Kích hoạt sự kiện click trên đối tượng input[type="file"]
-                                                fileInput.click();
-                                            });
+                                                    } else {
+                                                        Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'Upload failed',
+                                                                text: 'An error occurred while uploading the file. Please try again.'
+                                                            });
+                                                    }
+                                                }
+                                            };
+                                            xhr.send(formData);
                                         });
                                     </script>
                                     <a href="javascript:void(0)" class="list-group-item">
                                         <span class="badge badge-success m-r-10"><i class="ti-share-alt"></i></span> Restore Contacts
                                     </a>
+
                                     <a href="javascript:void(0)" class="list-group-item">
                                         <span class="badge badge-danger m-r-10"><i class="ti-trash"></i></span> Delete All Contacts
                                     </a>

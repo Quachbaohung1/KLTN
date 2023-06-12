@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify, abort
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, abort, send_from_directory
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import os
@@ -16,6 +16,9 @@ app.config['MYSQL_USER'] = 'admin'
 app.config['MYSQL_PASSWORD'] = '1709hung2000'
 app.config['MYSQL_DB'] = 'khoaluan'
 app.config['SECRET_KEY'] = 'Baohung0303'
+
+app.config['UPLOAD_FOLDER'] = 'static/img'
+app.config['ALLOWED_EXTENSIONS'] = {'csv', 'xlsx', 'xls'}
 
 # Intialize MySQL
 mysql = MySQL(app)
@@ -206,27 +209,27 @@ def upload_image():
     else:
         return jsonify({'success': False, 'message': 'No file selected.'})
 
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
 @app.route('/login/users/upload_contacts', methods=['POST'])
 def upload_contacts():
     file = request.files['file']
-    if file:
-        filename = file.filename
-        file_path = os.path.join('static/img', secure_filename(filename))
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        try:
-            if filename.endswith('.csv'):
-                df = pd.read_csv(file_path)
-            elif filename.endswith('.xlsx') or filename.endswith('.xls'):
-                df = pd.read_excel(file_path)
-            else:
-                os.remove(file_path)
-                return jsonify({'success': False, 'message': 'Unsupported file format.'})
-            return jsonify({'success': True, 'message': 'File uploaded and processed successfully.'})
-        except Exception as e:
-            os.remove(file_path)
-            return jsonify({'success': False, 'message': 'Error processing file.', 'error': str(e)})
+        if filename.endswith('.csv'):
+            df = pd.read_csv(file_path)
+        elif filename.endswith('.xlsx') or filename.endswith('.xls'):
+            df = pd.read_excel(file_path)
+        return jsonify({'success': True, 'message': 'File uploaded and processed successfully.'})
     else:
-        return jsonify({'success': False, 'message': 'No file selected.'})
+        return jsonify({'success': False, 'message': 'Invalid file or file format.'})
+
+
 
 
 if __name__ == "__main__":
