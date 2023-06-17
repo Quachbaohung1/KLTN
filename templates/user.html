@@ -1,32 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Dashboard - Smart Facial</title>
-        <meta content="" name="description">
-        <meta content="" name="keywords">
-        <!-- Favicons -->
-        <link href="{{ url_for('static', filename='img/favicon.png') }}" rel="icon">
-        <link href="{{ url_for('static', filename='img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-        <!-- Google Fonts -->
-        <link href="https://fonts.gstatic.com" rel="preconnect">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-        <!-- Vendor CSS Files -->
-        <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='vendor/quill/quill.snow.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='vendor/quill/quill.bubble.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static',filename='vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="{{ url_for('static', filename='vendor/simple-datatables/style.css') }}">
-        <!-- Template Main CSS File -->
-        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
-        <!-- This page plugin CSS -->
-        <link href="{{ url_for('static',filename='dataTables.bootstrap4.css') }}" rel="stylesheet">
-    </head>
-    <body>
-    <!-- ======= Header ======= -->
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>User - Smart Facial</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <!-- Favicon icon -->
+    <link href="{{ url_for('static', filename='img/favicon.png') }}" rel="icon">
+    <link href="{{ url_for('static', filename='img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendor/quill/quill.snow.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendor/quill/quill.bubble.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/simple-datatables/style.css') }}">
+    <!-- This page plugin CSS -->
+    <link href="{{ url_for('static',filename='assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static',filename='dist/css/style.css') }}" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
     <header id="header" class="header fixed-top d-flex align-items-center">
         <div class="d-flex align-items-center justify-content-between">
             <a href="/login/home" class="logo d-flex align-items-center">
@@ -34,14 +36,16 @@
                 <span class="d-none d-lg-block">SmartFacial</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
-        </div><!-- End Logo -->
+        </div>
+        <!-- End Logo -->
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
                 <li class="nav-item dropdown pe-3">
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                         <img src="{{ url_for('static', filename='img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
                         <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
-                    </a><!-- End Profile Iamge Icon -->
+                    </a>
+                    <!-- End Profile Iamge Icon -->
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
                             <h6>Kevin Anderson</h6>
@@ -65,32 +69,25 @@
                                 <span>Sign Out</span>
                             </a>
                         </li>
-                    </ul><!-- End Profile Dropdown Items -->
-                </li><!-- End Profile Nav -->
+                    </ul>
+                    <!-- End Profile Dropdown Items -->
+                </li>
+                <!-- End Profile Nav -->
             </ul>
-        </nav><!-- End Icons Navigation -->
-    </header><!-- End Header -->
+        </nav>
+        <!-- End Icons Navigation -->
+    </header>
+    <!-- End Header -->
+    <!-- ======= Sidebar ======= -->
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/login/home">
+                <a class="nav-link " href="/login/home">
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </a>
             </li><!-- End Dashboard Nav -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-bar-chart"></i><span>Charts</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="/login/chart">
-                            <i class="bi bi-circle"></i><span>ApexCharts</span>
-                        </a>
-                    </li>
-                </ul>
-            </li><!-- End Charts Nav -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/login/profile">
                     <i class="bi bi-person"></i>
@@ -98,11 +95,11 @@
                 </a>
             </li><!-- End Profile Page Nav -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/login/calendar">
+                <a class="nav-link collapsed" href="/login/time">
                     <i class="bi bi-envelope"></i>
-                    <span>Calendar</span>
+                    <span>Time Check-in</span>
                 </a>
-            </li><!-- End Calendar Page Nav -->
+            </li><!-- End Time Page Nav -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/login/register">
                     <i class="bi bi-card-list"></i>
@@ -110,7 +107,7 @@
                 </a>
             </li><!-- End Register Page Nav -->
             <li class="nav-item">
-                <a class="nav-link" href="/login/users">
+                <a class="nav-link collapsed" href="/login/users">
                     <i class="bi bi-person-plus"></i>
                     <span>User</span>
                 </a>
@@ -128,10 +125,7 @@
             </nav>
         </div><!-- End Page Title -->
         <section class="section">
-            <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Start Page Content -->
-                <!-- ============================================================== -->
+            <div class="content-wrapper">
                 <div class="row">
                     <!-- Column -->
                     <div class="col-lg-8 col-xl-9 col-md-9">
@@ -139,6 +133,13 @@
                             <div class="card-body">
                                 <div class="d-flex no-block align-items-center m-b-30">
                                     <h4 class="card-title">All Contacts</h4>
+                                    <div class="ml-auto">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#createmodel">
+                                                Reload Contact
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="table-responsive">
                                     <table id="file_export" class="table table-bordered nowrap display">
@@ -164,7 +165,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="30" /> Genelia Deshmukh</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/1.jpg') }}" alt="user" class="rounded-circle" width="30" /> Genelia Deshmukh</a>
                                                 </td>
                                                 <td>genelia@gmail.com</td>
                                                 <td>+123 456 789</td>
@@ -184,7 +185,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/2.jpg" alt="user" class="rounded-circle" width="30" /> Arijit Singh</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/2.jpg') }}" alt="user" class="rounded-circle" width="30" /> Arijit Singh</a>
                                                 </td>
                                                 <td>arijit@gmail.com</td>
                                                 <td>+234 456 789</td>
@@ -204,7 +205,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/3.jpg" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/3.jpg') }}" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
                                                 </td>
                                                 <td>govinda@gmail.com</td>
                                                 <td>+345 456 789</td>
@@ -224,7 +225,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/4.jpg" alt="user" class="rounded-circle" width="30" /> Hritik Roshan</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/4.jpg') }}" alt="user" class="rounded-circle" width="30" /> Hritik Roshan</a>
                                                 </td>
                                                 <td>hritik@gmail.com</td>
                                                 <td>+456 456 789</td>
@@ -244,7 +245,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/5.jpg" alt="user" class="rounded-circle" width="30" /> John Abraham</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/5.jpg') }}" alt="user" class="rounded-circle" width="30" /> John Abraham</a>
                                                 </td>
                                                 <td>john@gmail.com</td>
                                                 <td>+567 456 789</td>
@@ -264,7 +265,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/6.jpg" alt="user" class="rounded-circle" width="30" /> Pawandeep kumar</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/6.jpg') }}" alt="user" class="rounded-circle" width="30" /> Pawandeep kumar</a>
                                                 </td>
                                                 <td>pawandeep@gmail.com</td>
                                                 <td>+678 456 789</td>
@@ -284,7 +285,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/7.jpg" alt="user" class="rounded-circle" width="30" /> Ritesh Deshmukh</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/7.jpg') }}" alt="user" class="rounded-circle" width="30" /> Ritesh Deshmukh</a>
                                                 </td>
                                                 <td>ritesh@gmail.com</td>
                                                 <td>+123 456 789</td>
@@ -304,7 +305,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/8.jpg" alt="user" class="rounded-circle" width="30" /> Salman Khan</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/8.jpg') }}" alt="user" class="rounded-circle" width="30" /> Salman Khan</a>
                                                 </td>
                                                 <td>salman@gmail.com</td>
                                                 <td>+234 456 789</td>
@@ -324,7 +325,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/1.jpg') }}" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
                                                 </td>
                                                 <td>govinda@gmail.com</td>
                                                 <td>+345 456 789</td>
@@ -344,7 +345,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/2.jpg" alt="user" class="rounded-circle" width="30" /> Sonu Nigam</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/2.jpg') }}" alt="user" class="rounded-circle" width="30" /> Sonu Nigam</a>
                                                 </td>
                                                 <td>sonu@gmail.com</td>
                                                 <td>+456 456 789</td>
@@ -364,7 +365,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/3.jpg" alt="user" class="rounded-circle" width="30" /> Varun Dhawan</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/3.jpg') }}" alt="user" class="rounded-circle" width="30" /> Varun Dhawan</a>
                                                 </td>
                                                 <td>varun@gmail.com</td>
                                                 <td>+567 456 789</td>
@@ -384,7 +385,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/4.jpg" alt="user" class="rounded-circle" width="30" /> Genelia Deshmukh</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/4.jpg') }}" alt="user" class="rounded-circle" width="30" /> Genelia Deshmukh</a>
                                                 </td>
                                                 <td>genelia@gmail.com</td>
                                                 <td>+123 456 789</td>
@@ -404,7 +405,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/5.jpg" alt="user" class="rounded-circle" width="30" /> Arijit Singh</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/5.jpg') }}" alt="user" class="rounded-circle" width="30" /> Arijit Singh</a>
                                                 </td>
                                                 <td>arijit@gmail.com</td>
                                                 <td>+234 456 789</td>
@@ -424,7 +425,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/6.jpg" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/6.jpg') }}" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
                                                 </td>
                                                 <td>govinda@gmail.com</td>
                                                 <td>+345 456 789</td>
@@ -444,7 +445,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="30" /> Genelia Deshmukh</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/1.jpg') }}" alt="user" class="rounded-circle" width="30" /> Genelia Deshmukh</a>
                                                 </td>
                                                 <td>genelia@gmail.com</td>
                                                 <td>+123 456 789</td>
@@ -464,7 +465,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/2.jpg" alt="user" class="rounded-circle" width="30" /> Arijit Singh</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/2.jpg') }}" alt="user" class="rounded-circle" width="30" /> Arijit Singh</a>
                                                 </td>
                                                 <td>arijit@gmail.com</td>
                                                 <td>+234 456 789</td>
@@ -484,7 +485,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/3.jpg" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/3.jpg') }}" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
                                                 </td>
                                                 <td>govinda@gmail.com</td>
                                                 <td>+345 456 789</td>
@@ -504,7 +505,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/4.jpg" alt="user" class="rounded-circle" width="30" /> Hritik Roshan</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/4.jpg') }}" alt="user" class="rounded-circle" width="30" /> Hritik Roshan</a>
                                                 </td>
                                                 <td>hritik@gmail.com</td>
                                                 <td>+456 456 789</td>
@@ -524,7 +525,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/5.jpg" alt="user" class="rounded-circle" width="30" /> John Abraham</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/5.jpg') }}" alt="user" class="rounded-circle" width="30" /> John Abraham</a>
                                                 </td>
                                                 <td>john@gmail.com</td>
                                                 <td>+567 456 789</td>
@@ -544,7 +545,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/6.jpg" alt="user" class="rounded-circle" width="30" /> Pawandeep kumar</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/6.jpg') }}" alt="user" class="rounded-circle" width="30" /> Pawandeep kumar</a>
                                                 </td>
                                                 <td>pawandeep@gmail.com</td>
                                                 <td>+678 456 789</td>
@@ -564,7 +565,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/7.jpg" alt="user" class="rounded-circle" width="30" /> Ritesh Deshmukh</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/7.jpg') }}" alt="user" class="rounded-circle" width="30" /> Ritesh Deshmukh</a>
                                                 </td>
                                                 <td>ritesh@gmail.com</td>
                                                 <td>+123 456 789</td>
@@ -584,7 +585,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/8.jpg" alt="user" class="rounded-circle" width="30" /> Salman Khan</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/8.jpg') }}" alt="user" class="rounded-circle" width="30" /> Salman Khan</a>
                                                 </td>
                                                 <td>salman@gmail.com</td>
                                                 <td>+234 456 789</td>
@@ -604,7 +605,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/1.jpg') }}" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
                                                 </td>
                                                 <td>govinda@gmail.com</td>
                                                 <td>+345 456 789</td>
@@ -624,7 +625,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="app-contact-detail.html"><img src="../../assets/images/users/2.jpg" alt="user" class="rounded-circle" width="30" /> Sonu Nigam</a>
+                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/2.jpg') }}" alt="user" class="rounded-circle" width="30" /> Sonu Nigam</a>
                                                 </td>
                                                 <td>sonu@gmail.com</td>
                                                 <td>+456 456 789</td>
@@ -643,43 +644,91 @@
                         </div>
                     </div>
                     <!-- Column -->
-                    <!-- Column -->
                     <div class="col-lg-4 col-xl-3 col-md-3">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title m-t-30">Function</h4>
+                                <h4 class="card-title m-t-30">Functional</h4>
                                 <div class="list-group">
-                                    <a href="javascript:void(0)" class="list-group-item">
+                                    <a href="javascript:void(0)" class="list-group-item" id="importButton">
                                         <span class="badge badge-info m-r-10"><i class="ti-import"></i></span> Import Contacts
                                     </a>
-                                    <a href="javascript:void(0)" class="list-group-item">
-                                        <span class="badge badge-warning text-white m-r-10"><i class="ti-export"></i></span> Export Contacts
-                                    </a>
-                                    <a href="javascript:void(0)" class="list-group-item">
-                                        <span class="badge badge-success m-r-10"><i class="ti-share-alt"></i></span> Restore Contacts
-                                    </a>
-                                    <a href="javascript:void(0)" class="list-group-item">
-                                        <span class="badge badge-primary m-r-10"><i class="ti-layers-alt"></i></span> Duplicate Contacts
-                                    </a>
+                                    <input type="file" id="upload-input" style="display: none;">
+                                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
+                                    <script>
+                                        document.getElementById("importButton").addEventListener("click", function() {
+                                            event.preventDefault();
+                                            document.getElementById("upload-input").click();
+                                        });
+                                        document.getElementById("upload-input").addEventListener("change", function() {
+                                            var file = this.files[0];
+                                            var formData = new FormData();
+                                            formData.append("file", file);
+                                            var xhr = new XMLHttpRequest();
+                                            xhr.open("POST", "/login/users/upload_contacts");
+                                            xhr.onreadystatechange = function() {
+                                                if (xhr.readyState === 4) {
+                                                    if (xhr.status === 200) {
+                                                        var response = JSON.parse(xhr.responseText);
+                                                        if (response.success) {
+                                                            Swal.fire({
+                                                                icon: 'success',
+                                                                title: 'Upload successful!',
+                                                                text: 'The file has been uploaded and processed successfully.'
+                                                            });
+                                                        } else {
+                                                            Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'Upload failed',
+                                                                text: 'An error occurred while uploading the file. Please try again.'
+                                                            });
+                                                        }
+                                                    } else {
+                                                        Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'Upload failed',
+                                                                text: 'An error occurred while uploading the file. Please try again.'
+                                                            });
+                                                    }
+                                                }
+                                            };
+                                            xhr.send(formData);
+                                        });
+                                    </script>
                                     <a href="javascript:void(0)" class="list-group-item">
                                         <span class="badge badge-danger m-r-10"><i class="ti-trash"></i></span> Delete All Contacts
                                     </a>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Column -->
                 </div>
             </div>
         </section>
-    </main><!-- End #main -->
+    </main>
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
         <div class="copyright">
             &copy; Copyright <strong><span>SmartFacial</span></strong>. All Rights Reserved
         </div>
-    </footer><!-- End Footer -->
+    </footer>
+    <!-- End Footer -->
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <!-- All Jquery -->
+    <script src="{{ url_for('static',filename='assets/libs/jquery/dist/jquery.min.js') }}"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="{{ url_for('static',filename='assets/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <!--This page plugins -->
+    <script src="{{ url_for('static',filename='assets/extra-libs/DataTables/datatables.min.js') }}"></script>
+    <!-- start - This is for export functionality only -->
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
+    <script src="{{ url_for('static',filename='dist/js/pages/datatable/datatable-advanced.init.js') }}"></script>
     <!-- Vendor JS Files -->
     <script src="{{ url_for('static', filename='vendor/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -691,20 +740,6 @@
     <script src="{{ url_for('static', filename='vendor/php-email-form/validate.js') }}"></script>
     <!-- Template Main JS File -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <!-- start - This is for export functionality only -->
-    <script src="file://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
-    <script src="file://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
-    <script src="file://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="file://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
-    <script src="file://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
-    <script src="file://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
-    <script src="file://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
-    <script src="{{ url_for('static', filename='vendor/datatable/datatable-advanced.init.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <!-- apps -->
-    <script src="{{ url_for('static', filename='js/app.min.js') }}"></script>
-    </body>
+
+</body>
 </html>

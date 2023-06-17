@@ -173,7 +173,7 @@ def register():
 def load_users():
     # Check if user is logged-in
     if 'loggedin' in session:
-        return render_template('Test.html')
+        return render_template('user.html')
     return redirect(url_for('login'))
 
 # Các hàm hỗ trợ
@@ -183,11 +183,11 @@ def get_managed_employees(manager_id):
     # và trả về danh sách nhân viên
     pass
 
-@app.route('/login/calendar')
+@app.route('/login/time')
 def calendar():
     # Check if user is logged-in
     if 'loggedin' in session:
-        return render_template('calendar.html')
+        return render_template('Time.html')
     return redirect(url_for('login'))
 
 @app.route('/login/chart')
