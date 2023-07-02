@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify, abort, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, abort, flash
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import os
@@ -16,7 +16,6 @@ app.config['MYSQL_USER'] = 'admin'
 app.config['MYSQL_PASSWORD'] = '1709hung2000'
 app.config['MYSQL_DB'] = 'khoaluan'
 app.config['SECRET_KEY'] = 'Baohung0303'
-
 app.config['UPLOAD_FOLDER'] = 'static/img'
 app.config['ALLOWED_EXTENSIONS'] = {'csv', 'xlsx', 'xls'}
 
@@ -26,8 +25,6 @@ mysql = MySQL(app)
 # Định nghĩa các tuyến đường và phân quyền
 @app.route('/login/', methods=["GET", "POST"])
 def login():
-    # Output message if something goes wrong...
-    msg = ''
     # Check if "username" and "password" POST requests exist (user submitted form)
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         # Create variables for easy access
@@ -44,13 +41,12 @@ def login():
         if account:
             # Check if the account is locked
             if account['Is_active'] == 0 and (datetime.now() - account['Last_login_time']) < timedelta(minutes=1):
-                msg = 'Your account has been locked!'
-                return redirect(url_for('login'))
+                return render_template('index.html', msg='Your account has been locked in 1 minute!')
             else:
                 # Get the stored hashed password from the account data
                 stored_password = account['Password_reset_token']
                 # Get the failed login attempts count from the account data
-                Failed_login_attempts = account['Failed_login_attempts']
+                failed_login_attempts = account['Failed_login_attempts']
                 # Compare the hashed password input by the user with the stored hashed password
                 if hashed_password == stored_password:
                     # Reset failed login attempts and update last login time
@@ -67,113 +63,239 @@ def login():
                     return redirect(url_for('home'))
                 else:
                     # Increment failed login attempts
-                    Failed_login_attempts += 1
-                    cursor.execute('UPDATE Auth_user SET Failed_login_attempts = Auth_user.Failed_login_attempts + 1 WHERE id = %s',
-                                   (account['id'],))
+                    failed_login_attempts += 1
+                    cursor.execute(
+                        'UPDATE Auth_user SET Failed_login_attempts = Auth_user.Failed_login_attempts + 1 WHERE id = %s',
+                        (account['id'],))
                     mysql.connection.commit()
                     # Check if the account should be locked
-                    if account['Failed_login_attempts'] >= 4:
+                    if failed_login_attempts >= 4:
                         # Lock the account
                         cursor.execute('UPDATE Auth_user SET Is_active = 0 WHERE id = %s', (account['id'],))
                         mysql.connection.commit()
-                        msg = 'Your account has been locked!'
-                        return redirect(url_for('login'))
+                        return render_template('index.html', msg='Your account has been locked!')
                     else:
-                        msg = f'Incorrect username/password! Failed login attempts: {Failed_login_attempts}'
-                        return redirect(url_for('login'))
+                        return render_template('index.html', msg='Incorrect username/password!')
         else:
-            msg = 'Invalid username or password!'
-            return redirect(url_for('login'))
-    # Show the login form with message (if any)
-    return render_template('index.html', msg=msg)
+            return render_template('index.html', msg='Incorrect username or password!')
+    return render_template('index.html', msg='')
+
 
 @app.route('/login/home')
 def home():
-    if 'loggedin' in session and session['RoleID'] == 3:
-        # Người dùng đã đăng nhập và có vai trò admin
-        # Thực hiện các tác vụ tương ứng với màn hình dashboard của admin
-        return render_template('admin_home.html')
-    elif 'loggedin' in session and session['RoleID'] == 1:
-        # Người dùng đã đăng nhập và có vai trò user
-        # Thực hiện các tác vụ tương ứng với màn hình dashboard của user
-        return render_template('user_home.html')
-    elif 'loggedin' in session and session['RoleID'] == 2:
-        # Người dùng đã đăng nhập và có vai trò user
-        # Thực hiện các tác vụ tương ứng với màn hình dashboard của user
-        return render_template('manage_home.html')
-    else:
-        # Người dùng không có quyền truy cập vào màn hình này
-        abort(403)
+    username = session.get('username')  # Lấy tên người dùng từ session
+    user_id = session.get('id')
 
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM Auth_user WHERE id = %s AND username = %s', (user_id, username,))
+    auth_user = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
 
-@app.route('/login/profile')
+    cursor.execute('SELECT * FROM Employee WHERE id = %s', (user_id,))
+    employee = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
+
+    cursor.close()
+
+    if auth_user:
+        role_id = session.get('RoleID')
+        if role_id == 3:
+            # Người dùng đã đăng nhập và có vai trò admin
+            # Thực hiện các tác vụ tương ứng với màn hình dashboard của admin
+            return render_template('admin_home.html', Auth_user=auth_user, Employee=employee)
+        elif role_id == 1:
+            # Người dùng đã đăng nhập và có vai trò user
+            # Thực hiện các tác vụ tương ứng với màn hình dashboard của user
+            return render_template('user_home.html', Auth_user=auth_user, Employee=employee)
+        elif role_id == 2:
+            # Người dùng đã đăng nhập và có vai trò manager
+            # Thực hiện các tác vụ tương ứng với màn hình dashboard của manager
+            return render_template('manager_home.html', Auth_user=auth_user, Employee=employee)
+
+    # Người dùng không có quyền truy cập vào màn hình này hoặc chưa đăng nhập
+    abort(403)
+
+@app.route('/login/profile', methods=['GET', 'POST'])
 def profile():
     # Check if user is logged-in
     if 'loggedin' in session:
         # We need all the account info for the user, so we can display it on the profile page
+        username = session.get('username')  # Lấy tên người dùng từ session
+        user_id = session.get('id')
+
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM Employee WHERE Employee.id = %s', (session['id'],))
-        employee = cursor.fetchone()
+        cursor.execute('SELECT * FROM Auth_user WHERE id = %s AND username = %s', (user_id, username,))
+        auth_user = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
+
+        if request.method == 'POST':
+            # Retrieve the form data
+            full_name = request.form.get('fullName')
+            age = request.form.get('age')
+            department_id = request.form.get('Dept')
+            address = request.form.get('address')
+            phone = request.form.get('phone')
+            email = request.form.get('email')
+
+            # Split the full name into first name and last name
+            name_parts = full_name.split()
+            if len(name_parts) >= 2:
+                first_name = name_parts[0]
+                last_name = ' '.join(name_parts[1:])
+            else:
+                first_name = full_name
+                last_name = ''
+
+            # Update the user's profile in the database
+            cursor.execute('UPDATE Employee SET FirstName = %s, LastName = %s, Age = %s, Department_ID = %s, Address = %s, Phone_no = %s, Email_Address = %s WHERE id = %s',
+                           (first_name, last_name, age, department_id, address, phone, email, user_id))
+            mysql.connection.commit()
+
+        cursor.execute('SELECT * FROM Employee WHERE id = %s', (user_id,))
+        employee = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
+
+        cursor.execute('SELECT * FROM Department')
+        departments = cursor.fetchall()
+
+        cursor.close()
+
         if employee:
             # Show the profile page with account info
-            return render_template('profile.html', Employee=employee)
+            return render_template('profile.html', Auth_user=auth_user, Employee=employee, departments=departments)
         else:
             # Employee not found in the database
             abort(403)
+
     # User is not logged-in redirect to login page
     return redirect(url_for('login'))
+
+@app.route('/login/profile/change_password', methods=['GET', 'POST'])
+def change_password():
+    # Check if user is logged-in
+    if 'loggedin' in session:
+        user_id = session.get('id')
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM Auth_user WHERE id = %s', (user_id,))
+        user = cursor.fetchone()
+
+        if user:
+            if request.method == 'POST':
+                current_password = request.form.get('currentPassword')
+                new_password = request.form.get('newPassword')
+                confirm_password = request.form.get('confirmPassword')
+
+                if current_password == user['password']:
+                    if new_password == confirm_password:
+                        # Hash the new password
+                        hashed_password = hashlib.sha256(new_password.encode()).hexdigest()
+                        # Update the user's password and Password_reset_token in the database
+                        cursor.execute('UPDATE Auth_user SET password = %s, Password_reset_token = %s WHERE id = %s',
+                                       (new_password, hashed_password, user_id))
+                        mysql.connection.commit()
+
+                        flash('Password changed successfully!', 'success')
+                    else:
+                        flash('New password and confirm password do not match.', 'error')
+                else:
+                    flash('Incorrect current password.', 'error')
+            cursor.execute('SELECT * FROM Employee WHERE id = %s', (user_id,))
+            employee = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
+            cursor.close()
+            return redirect(url_for('profile'))
+
+    # User is not logged-in, redirect to login page
+    return redirect(url_for('login'))
+
 
 
 # Get the maximum employee_id in the database
 def get_max_employee_id(cursor):
     cursor.execute('SELECT MAX(employee_id) FROM Auth_user')
     result = cursor.fetchone()
-    max_employee_id = result['MAX(employee_id)'] if result['MAX(employee_id)'] else 0
+    max_employee_id = result['MAX(employee_id)'] if result['MAX(employee_id)'] is not None else 0
     return max_employee_id
+
+def get_max_id(cursor):
+    cursor.execute('SELECT MAX(id) FROM Auth_user')
+    result = cursor.fetchone()
+    max_id = result['MAX(id)'] if result['MAX(id)'] is not None else 0
+    return max_id
+
 @app.route('/login/register', methods=["GET", "POST"])
 def register():
     # Output message if something goes wrong...
     msg = ''
-    # Check if "username", "password", "confirm-password" POST requests exist (user submitted form)
-    if request.method == 'POST':
+
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM Role')
+    roles = cursor.fetchall()
+    cursor.execute('SELECT * FROM Department')
+    departments = cursor.fetchall()
+
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         # Create variables for easy access
         username = request.form['username']
-        # Hash password using SHA256
         password = request.form['password']
-        RoleID = request.form['RoleID']
-        is_active = 1
+        RoleID = request.form['role']
+        Department_ID = request.form['Dept']
+        first_name = request.form['firstName']
+        last_name = request.form['lastName']
+        email = request.form['email']
+
         # Get the maximum employee_id in the database
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         max_employee_id = get_max_employee_id(cursor)
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        max_id = get_max_id(cursor)
+
         # Generate a new employee_id
+        id = max_id + 1
+        is_active = 1
         employee_id = max_employee_id + 1
         failed_login_attempts = 0
-        last_login_time = datetime.now()
-        password_reset_token = hashlib.sha256(request.form['password'].encode()).hexdigest()
+        last_login_time = 0
+        password_reset_token = hashlib.sha256(request.form['password'].encode()).hexdigest() # Hash password using SHA256
+        created_at = datetime.now()
+        updated_at = datetime.now()
+
         # Check if account exists using MySQL
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM Auth_user WHERE username = %s', (username,))
         account = cursor.fetchone()
+
         # If account exists show error and validation checks
         if account:
             msg = 'Account already exists!'
+            return render_template('register.html', roles=roles, departments=departments, msg=msg)
         else:
+            # Insert data into employee table
+            cursor.execute('INSERT INTO Employee VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                           (employee_id, first_name, last_name, RoleID, Department_ID, None, None, None, email, created_at, updated_at))
             # Account doesn't exist and the form data is valid, now insert new account into accounts table
-            cursor.execute('INSERT INTO Auth_user VALUES (NULL, %s, %s, %s, %s, %s, %s, %s, %s)',
-                (username, password, employee_id, is_active, failed_login_attempts, last_login_time, password_reset_token, RoleID,))
+            cursor.execute('INSERT INTO Auth_user VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                           (id, username, password, employee_id, is_active, failed_login_attempts, last_login_time, password_reset_token, created_at, updated_at, RoleID))
             mysql.connection.commit()
             msg = 'You have successfully registered!'
-    elif request.method == "POST":
+            return render_template('register.html', roles=roles, departments=departments, msg=msg)
+    elif request.method == 'GET':
         # Form is empty... (no POST data)
-        msg = 'Please fill out the form!'
+        pass
     # Show registration form with message (if any)
-    return render_template('register.html', msg=msg)
+    return render_template('register.html', roles=roles, departments=departments, msg=msg)
 
 @app.route('/login/users')
 def load_users():
+    username = session.get('username')  # Lấy tên người dùng từ session
+    user_id = session.get('id')
+
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM Auth_user WHERE id = %s AND username = %s', (user_id, username,))
+    auth_user = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
+
+    cursor.execute('SELECT * FROM Employee WHERE id = %s', (user_id,))
+    employee = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
+
+    cursor.close()
     # Check if user is logged-in
     if 'loggedin' in session:
-        return render_template('user.html')
+        return render_template('user.html', Auth_user=auth_user, Employee=employee)
     return redirect(url_for('login'))
 
 # Các hàm hỗ trợ
@@ -185,9 +307,20 @@ def get_managed_employees(manager_id):
 
 @app.route('/login/time')
 def calendar():
+    username = session.get('username')  # Lấy tên người dùng từ session
+    user_id = session.get('id')
+
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM Auth_user WHERE id = %s AND username = %s', (user_id, username,))
+    auth_user = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
+
+    cursor.execute('SELECT * FROM Employee WHERE id = %s', (user_id,))
+    employee = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
+
+    cursor.close()
     # Check if user is logged-in
     if 'loggedin' in session:
-        return render_template('Time.html')
+        return render_template('Time.html', Auth_user=auth_user, Employee=employee)
     return redirect(url_for('login'))
 
 @app.route('/login/chart')
@@ -228,9 +361,6 @@ def upload_contacts():
         return jsonify({'success': True, 'message': 'File uploaded and processed successfully.'})
     else:
         return jsonify({'success': False, 'message': 'Invalid file or file format.'})
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)
