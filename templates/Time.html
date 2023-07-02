@@ -130,8 +130,8 @@
                                     <div class="col-md-6 col-lg-3 col-xlg-3">
                                         <div class="card card-hover">
                                             <div class="box bg-info text-center">
-                                                <h1 class="font-light text-white">2,064</h1>
-                                                <h6 class="text-white">Total Tickets</h6>
+                                                <h1 class="font-light text-white">{{ ontime_count }}</h1>
+                                                <h6 class="text-white">Total On Time</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -139,8 +139,10 @@
                                     <div class="col-md-6 col-lg-3 col-xlg-3">
                                         <div class="card card-hover">
                                             <div class="box bg-primary text-center">
-                                                <h1 class="font-light text-white">1,738</h1>
-                                                <h6 class="text-white">Responded</h6>
+                                                <h1 class="font-light text-white">
+                                                    {{ late_count }}
+                                                </h1>
+                                                <h6 class="text-white">Total Late</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -148,8 +150,10 @@
                                     <div class="col-md-6 col-lg-3 col-xlg-3">
                                         <div class="card card-hover">
                                             <div class="box bg-success text-center">
-                                                <h1 class="font-light text-white">1100</h1>
-                                                <h6 class="text-white">Resolve</h6>
+                                                <h1 class="font-light text-white">
+                                                    {{ na_count }}
+                                                </h1>
+                                                <h6 class="text-white">Total N/A</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -157,8 +161,10 @@
                                     <div class="col-md-6 col-lg-3 col-xlg-3">
                                         <div class="card card-hover">
                                             <div class="box bg-dark text-center">
-                                                <h1 class="font-light text-white">964</h1>
-                                                <h6 class="text-white">Pending</h6>
+                                                <h1 class="font-light text-white">
+                                                    {{ total_contact }}
+                                                </h1>
+                                                <h6 class="text-white">Total Contact</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -169,132 +175,57 @@
                                         <thead>
                                             <tr>
                                                 <th>Status</th>
-                                                <th>Title</th>
-                                                <th>ID</th>
-                                                <th>Product</th>
-                                                <th>Created by</th>
-                                                <th>Date</th>
-                                                <th>Agent</th>
+                                                <th>Fullname</th>
+                                                <th>Department</th>
+                                                <th>Check-in</th>
+                                                <th>Check-out</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td><span class="label label-warning">In Progress</span></td>
-                                                <td><a href="ticket-detail.html" class="font-medium link">Elegant Theme Side Menu Open OnClick</a></td>
-                                                <td><a href="ticket-detail.html" class="font-bold link">276377</a></td>
-                                                <td>Elegant Admin</td>
-                                                <td>Eric Pratt</td>
-                                                <td>2018/05/01</td>
-                                                <td>Fazz</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-danger">Closed</span></td>
-                                                <td><a href="ticket-detail.html" class="font-medium link">AdminX Theme Side Menu Open OnClick</a></td>
-                                                <td><a href="ticket-detail.html" class="font-bold link">1234251</a></td>
-                                                <td>AdminX Admin</td>
-                                                <td>Nirav Joshi</td>
-                                                <td>2018/05/11</td>
-                                                <td>Steve</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-success">Opened</span></td>
-                                                <td><a href="ticket-detail.html" class="font-medium link">Admin-Pro Theme Side Menu Open OnClick</a></td>
-                                                <td><a href="ticket-detail.html" class="font-bold link">1020345</a></td>
-                                                <td>Admin-Pro</td>
-                                                <td>Vishal Bhatt</td>
-                                                <td>2018/04/01</td>
-                                                <td>John</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-warning">In Progress</span></td>
-                                                <td><a href="ticket-detail.html" class="font-medium link">Elegant Theme Side Menu Open OnClick</a></td>
-                                                <td><a href="ticket-detail.html" class="font-bold link">7810203</a></td>
-                                                <td>Elegant Admin</td>
-                                                <td>Eric Pratt</td>
-                                                <td>2018/01/01</td>
-                                                <td>Fazz</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-warning">In Progress</span></td>
-                                                <td><a href="ticket-detail.html" class="font-medium link">AdminX Theme Side Menu Open OnClick</a></td>
-                                                <td><a href="ticket-detail.html" class="font-bold link">2103450</a></td>
-                                                <td>AdminX Admin</td>
-                                                <td>Nirav Joshi</td>
-                                                <td>2018/05/01</td>
-                                                <td>John</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-warning">In Progress</span></td>
-                                                <td><a href="ticket-detail.html" class="font-medium link">Admin-Pro Theme Side Menu Open OnClick</a></td>
-                                                <td><a href="ticket-detail.html" class="font-bold link">2140530</a></td>
-                                                <td>Admin-Pro</td>
-                                                <td>Vishal Bhatt</td>
-                                                <td>2018/07/01</td>
-                                                <td>Steve</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-success">Opened</span></td>
-                                                <td><a href="ticket-detail.html" class="font-medium link">Elegant Theme Side Menu Open OnClick</a></td>
-                                                <td><a href="ticket-detail.html" class="font-bold link">4500123</a></td>
-                                                <td>Elegant Admin</td>
-                                                <td>Eric Pratt</td>
-                                                <td>2018/05/10</td>
-                                                <td>Fazz</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-danger">Closed</span></td>
-                                                <td><a href="ticket-detail.html" class="font-medium link">Elegant Theme Side Menu Open OnClick</a></td>
-                                                <td><a href="ticket-detail.html" class="font-bold link">1230450</a></td>
-                                                <td>Elegant Admin</td>
-                                                <td>Eric Pratt</td>
-                                                <td>2018/05/14</td>
-                                                <td>John</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-danger">Closed</span></td>
-                                                <td><a href="ticket-detail.html" class="font-medium link">AdminX Theme Side Menu Open OnClick</a></td>
-                                                <td><a href="ticket-detail.html" class="font-bold link">1240503</a></td>
-                                                <td>AdminX Admin</td>
-                                                <td>Nirav Joshi</td>
-                                                <td>2018/02/01</td>
-                                                <td>Steve</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-success">Opened</span></td>
-                                                <td><a href="ticket-detail.html" class="font-medium link">Admin-Pro Theme Side Menu Open OnClick</a></td>
-                                                <td><a href="ticket-detail.html" class="font-bold link">1250304</a></td>
-                                                <td>Admin-Pro</td>
-                                                <td>Vishal Bhatt</td>
-                                                <td>2018/05/21</td>
-                                                <td>Fazz</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-success">Opened</span></td>
-                                                <td><a href="ticket-detail.html" class="font-medium link">Elegant Theme Side Menu Open OnClick</a></td>
-                                                <td><a href="ticket-detail.html" class="font-bold link">1470250</a></td>
-                                                <td>Elegant Admin</td>
-                                                <td>Eric Pratt</td>
-                                                <td>2018/05/11</td>
-                                                <td>John</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-danger">Closed</span></td>
-                                                <td><a href="ticket-detail.html" class="font-medium link">Admin-Pro Theme Side Menu Open OnClick</a></td>
-                                                <td><a href="ticket-detail.html" class="font-bold link">1450023</a></td>
-                                                <td>Admin-Pro</td>
-                                                <td>Vishal Bhatt</td>
-                                                <td>2018/05/13</td>
-                                                <td>Steve</td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-warning">In Progress</span></td>
-                                                <td><a href="ticket-detail.html" class="font-medium link">AdminX Theme Side Menu Open OnClick</a></td>
-                                                <td><a href="ticket-detail.html" class="font-bold link">1420530</a></td>
-                                                <td>AdminX Admin</td>
-                                                <td>Nirav Joshi</td>
-                                                <td>2018/10/01</td>
-                                                <td>Fazz</td>
-                                            </tr>
+                                            {% for Employee in Employee1 %}
+                                                {% set employee_id = Employee.id %}
+                                                {% set check_ins = employee_check_ins.get(employee_id, []) %}
+                                                {% set check_outs = employee_check_outs.get(employee_id, []) %}
+                                                {% set max_length = check_ins|length if check_ins|length > check_outs|length else check_outs|length %}
+                                                {% for i in range(max_length) %}
+                                                    <tr>
+                                                        <td>
+                                                            {% if i < check_ins|length %}
+                                                                {% set check_in_time = check_ins[i]['Event_Time'] %}
+                                                                {% if check_in_time.hour <= 8 %}
+                                                                    <span class="label label-success">On time</span>
+                                                                {% else %}
+                                                                    <span class="label label-danger">Late</span>
+                                                                {% endif %}
+                                                            {% else %}
+                                                                <span class="label label-warning">N/A</span>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td><a class="font-medium link">{{ Employee.FirstName }} {{ Employee.LastName }}</a></td>
+                                                        <td><a class="font-bold link">
+                                                            {% for Department in departments %}
+                                                                {% if Department.id == Employee.Department_ID %}
+                                                                    {{ Department.Name }}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </a></td>
+                                                        <td>
+                                                            {% if i < check_ins|length %}
+                                                                {{ check_ins[i]['Event_Time'] }}
+                                                            {% else %}
+                                                                N/A
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            {% if i < check_outs|length %}
+                                                                {{ check_outs[i]['Event_Time'] }}
+                                                            {% else %}
+                                                                N/A
+                                                            {% endif %}
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>

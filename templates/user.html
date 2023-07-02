@@ -95,7 +95,7 @@
             </li><!-- End Profile Page Nav -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/login/time">
-                    <i class="bi bi-envelope"></i>
+                    <i class="bi bi-calendar-check"></i>
                     <span>Time Check-in</span>
                 </a>
             </li><!-- End Time Page Nav -->
@@ -132,509 +132,79 @@
                             <div class="card-body">
                                 <div class="d-flex no-block align-items-center m-b-30">
                                     <h4 class="card-title">All Contacts</h4>
-                                    <div class="ml-auto">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#createmodel">
-                                                Reload Contact
-                                            </button>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="table-responsive">
                                     <table id="file_export" class="table table-bordered nowrap display">
                                         <thead>
                                             <tr>
                                                 <th> </th>
+                                                <th>Is Active</th>
                                                 <th>FullName</th>
-                                                <th>Role</th>
                                                 <th>Department</th>
                                                 <th>Age</th>
                                                 <th>Phone Number</th>
                                                 <th>Address</th>
                                                 <th>Email</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation2" required>
-                                                        <label class="custom-control-label" for="customControlValidation2"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/1.jpg') }}" alt="user" class="rounded-circle" width="30" /> Genelia Deshmukh</a>
-                                                </td>
-                                                <td>genelia@gmail.com</td>
-                                                <td>+123 456 789</td>
-                                                <td><span class="label label-danger">Designer</span> </td>
-                                                <td>23</td>
-                                                <td>12-10-2014</td>
-                                                <td>$1200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation3" required>
-                                                        <label class="custom-control-label" for="customControlValidation3"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/2.jpg') }}" alt="user" class="rounded-circle" width="30" /> Arijit Singh</a>
-                                                </td>
-                                                <td>arijit@gmail.com</td>
-                                                <td>+234 456 789</td>
-                                                <td><span class="label label-info">Developer</span> </td>
-                                                <td>26</td>
-                                                <td>10-09-2014</td>
-                                                <td>$1800</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation4" required>
-                                                        <label class="custom-control-label" for="customControlValidation4"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/3.jpg') }}" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
-                                                </td>
-                                                <td>govinda@gmail.com</td>
-                                                <td>+345 456 789</td>
-                                                <td><span class="label label-success">Accountant</span></td>
-                                                <td>28</td>
-                                                <td>1-10-2013</td>
-                                                <td>$2200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation5" required>
-                                                        <label class="custom-control-label" for="customControlValidation5"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/4.jpg') }}" alt="user" class="rounded-circle" width="30" /> Hritik Roshan</a>
-                                                </td>
-                                                <td>hritik@gmail.com</td>
-                                                <td>+456 456 789</td>
-                                                <td><span class="label label-inverse">HR</span></td>
-                                                <td>25</td>
-                                                <td>2-10-2017</td>
-                                                <td>$200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation6" required>
-                                                        <label class="custom-control-label" for="customControlValidation6"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/5.jpg') }}" alt="user" class="rounded-circle" width="30" /> John Abraham</a>
-                                                </td>
-                                                <td>john@gmail.com</td>
-                                                <td>+567 456 789</td>
-                                                <td><span class="label label-danger">Manager</span></td>
-                                                <td>23</td>
-                                                <td>10-9-2015</td>
-                                                <td>$1200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation7" required>
-                                                        <label class="custom-control-label" for="customControlValidation7"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/6.jpg') }}" alt="user" class="rounded-circle" width="30" /> Pawandeep kumar</a>
-                                                </td>
-                                                <td>pawandeep@gmail.com</td>
-                                                <td>+678 456 789</td>
-                                                <td><span class="label label-warning">Chairman</span></td>
-                                                <td>29</td>
-                                                <td>10-5-2013</td>
-                                                <td>$1500</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation8" required>
-                                                        <label class="custom-control-label" for="customControlValidation8"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/7.jpg') }}" alt="user" class="rounded-circle" width="30" /> Ritesh Deshmukh</a>
-                                                </td>
-                                                <td>ritesh@gmail.com</td>
-                                                <td>+123 456 789</td>
-                                                <td><span class="label label-danger">Designer</span></td>
-                                                <td>35</td>
-                                                <td>05-10-2012</td>
-                                                <td>$3200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation9" required>
-                                                        <label class="custom-control-label" for="customControlValidation9"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/8.jpg') }}" alt="user" class="rounded-circle" width="30" /> Salman Khan</a>
-                                                </td>
-                                                <td>salman@gmail.com</td>
-                                                <td>+234 456 789</td>
-                                                <td><span class="label label-info">Developer</span></td>
-                                                <td>27</td>
-                                                <td>11-10-2014</td>
-                                                <td>$1800</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation10" required>
-                                                        <label class="custom-control-label" for="customControlValidation10"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/1.jpg') }}" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
-                                                </td>
-                                                <td>govinda@gmail.com</td>
-                                                <td>+345 456 789</td>
-                                                <td><span class="label label-success">Accountant</span></td>
-                                                <td>18</td>
-                                                <td>12-5-2017</td>
-                                                <td>$100</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation11" required>
-                                                        <label class="custom-control-label" for="customControlValidation11"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/2.jpg') }}" alt="user" class="rounded-circle" width="30" /> Sonu Nigam</a>
-                                                </td>
-                                                <td>sonu@gmail.com</td>
-                                                <td>+456 456 789</td>
-                                                <td><span class="label label-inverse">HR</span></td>
-                                                <td>36</td>
-                                                <td>18-5-2009</td>
-                                                <td>$4200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation12" required>
-                                                        <label class="custom-control-label" for="customControlValidation12"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/3.jpg') }}" alt="user" class="rounded-circle" width="30" /> Varun Dhawan</a>
-                                                </td>
-                                                <td>varun@gmail.com</td>
-                                                <td>+567 456 789</td>
-                                                <td><span class="label label-danger">Manager</span></td>
-                                                <td>43</td>
-                                                <td>12-10-2010</td>
-                                                <td>$5200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation13" required>
-                                                        <label class="custom-control-label" for="customControlValidation13"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/4.jpg') }}" alt="user" class="rounded-circle" width="30" /> Genelia Deshmukh</a>
-                                                </td>
-                                                <td>genelia@gmail.com</td>
-                                                <td>+123 456 789</td>
-                                                <td><span class="label label-danger">Designer</span> </td>
-                                                <td>23</td>
-                                                <td>12-10-2014</td>
-                                                <td>$1200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation14" required>
-                                                        <label class="custom-control-label" for="customControlValidation14"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/5.jpg') }}" alt="user" class="rounded-circle" width="30" /> Arijit Singh</a>
-                                                </td>
-                                                <td>arijit@gmail.com</td>
-                                                <td>+234 456 789</td>
-                                                <td><span class="label label-info">Developer</span> </td>
-                                                <td>26</td>
-                                                <td>10-09-2014</td>
-                                                <td>$1800</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation15" required>
-                                                        <label class="custom-control-label" for="customControlValidation15"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/6.jpg') }}" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
-                                                </td>
-                                                <td>govinda@gmail.com</td>
-                                                <td>+345 456 789</td>
-                                                <td><span class="label label-success">Accountant</span></td>
-                                                <td>28</td>
-                                                <td>1-10-2013</td>
-                                                <td>$2200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation16" required>
-                                                        <label class="custom-control-label" for="customControlValidation16"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/1.jpg') }}" alt="user" class="rounded-circle" width="30" /> Genelia Deshmukh</a>
-                                                </td>
-                                                <td>genelia@gmail.com</td>
-                                                <td>+123 456 789</td>
-                                                <td><span class="label label-danger">Designer</span> </td>
-                                                <td>23</td>
-                                                <td>12-10-2014</td>
-                                                <td>$1200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation17" required>
-                                                        <label class="custom-control-label" for="customControlValidation17"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/2.jpg') }}" alt="user" class="rounded-circle" width="30" /> Arijit Singh</a>
-                                                </td>
-                                                <td>arijit@gmail.com</td>
-                                                <td>+234 456 789</td>
-                                                <td><span class="label label-info">Developer</span> </td>
-                                                <td>26</td>
-                                                <td>10-09-2014</td>
-                                                <td>$1800</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation18" required>
-                                                        <label class="custom-control-label" for="customControlValidation18"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/3.jpg') }}" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
-                                                </td>
-                                                <td>govinda@gmail.com</td>
-                                                <td>+345 456 789</td>
-                                                <td><span class="label label-success">Accountant</span></td>
-                                                <td>28</td>
-                                                <td>1-10-2013</td>
-                                                <td>$2200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation19" required>
-                                                        <label class="custom-control-label" for="customControlValidation19"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/4.jpg') }}" alt="user" class="rounded-circle" width="30" /> Hritik Roshan</a>
-                                                </td>
-                                                <td>hritik@gmail.com</td>
-                                                <td>+456 456 789</td>
-                                                <td><span class="label label-inverse">HR</span></td>
-                                                <td>25</td>
-                                                <td>2-10-2017</td>
-                                                <td>$200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation20" required>
-                                                        <label class="custom-control-label" for="customControlValidation20"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/5.jpg') }}" alt="user" class="rounded-circle" width="30" /> John Abraham</a>
-                                                </td>
-                                                <td>john@gmail.com</td>
-                                                <td>+567 456 789</td>
-                                                <td><span class="label label-danger">Manager</span></td>
-                                                <td>23</td>
-                                                <td>10-9-2015</td>
-                                                <td>$1200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation21" required>
-                                                        <label class="custom-control-label" for="customControlValidation21"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/6.jpg') }}" alt="user" class="rounded-circle" width="30" /> Pawandeep kumar</a>
-                                                </td>
-                                                <td>pawandeep@gmail.com</td>
-                                                <td>+678 456 789</td>
-                                                <td><span class="label label-warning">Chairman</span></td>
-                                                <td>29</td>
-                                                <td>10-5-2013</td>
-                                                <td>$1500</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation22" required>
-                                                        <label class="custom-control-label" for="customControlValidation22"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/7.jpg') }}" alt="user" class="rounded-circle" width="30" /> Ritesh Deshmukh</a>
-                                                </td>
-                                                <td>ritesh@gmail.com</td>
-                                                <td>+123 456 789</td>
-                                                <td><span class="label label-danger">Designer</span></td>
-                                                <td>35</td>
-                                                <td>05-10-2012</td>
-                                                <td>$3200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation23" required>
-                                                        <label class="custom-control-label" for="customControlValidation23"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/8.jpg') }}" alt="user" class="rounded-circle" width="30" /> Salman Khan</a>
-                                                </td>
-                                                <td>salman@gmail.com</td>
-                                                <td>+234 456 789</td>
-                                                <td><span class="label label-info">Developer</span></td>
-                                                <td>27</td>
-                                                <td>11-10-2014</td>
-                                                <td>$1800</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation24" required>
-                                                        <label class="custom-control-label" for="customControlValidation24"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/1.jpg') }}" alt="user" class="rounded-circle" width="30" /> Govinda jalan</a>
-                                                </td>
-                                                <td>govinda@gmail.com</td>
-                                                <td>+345 456 789</td>
-                                                <td><span class="label label-success">Accountant</span></td>
-                                                <td>18</td>
-                                                <td>12-5-2017</td>
-                                                <td>$100</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customControlValidation25" required>
-                                                        <label class="custom-control-label" for="customControlValidation25"></label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <a href="app-contact-detail.html"><img src="{{ url_for('static',filename='assets/images/users/2.jpg') }}" alt="user" class="rounded-circle" width="30" /> Sonu Nigam</a>
-                                                </td>
-                                                <td>sonu@gmail.com</td>
-                                                <td>+456 456 789</td>
-                                                <td><span class="label label-inverse">HR</span></td>
-                                                <td>36</td>
-                                                <td>18-5-2009</td>
-                                                <td>$4200</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete"><i class="ti-close" aria-hidden="true"></i></button>
-                                                </td>
-                                            </tr>
+                                            {% for Employee in Employee1 %}
+                                                <tr>
+                                                    <td>
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="customControlValidation2" required>
+                                                            <label class="custom-control-label" for="customControlValidation2"></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        {% for Auth_user in auth_user1 %}
+                                                            {% if Auth_user.Employee_id == Employee.id %}
+                                                                {% if Auth_user.Is_active == 1 %}
+                                                                    <span class="label label-success">Active</span>
+                                                                {% elif Auth_user.Is_active == 0 %}
+                                                                    <span class="label label-danger">Stop</span>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td>
+                                                        <a><img src="{{ url_for('static',filename='assets/images/users/2.jpg') }}" alt="user" class="rounded-circle" width="30" /> {{ Employee.FirstName }} {{ Employee.LastName }}</a>
+                                                    </td>
+                                                    <td><span class="label label-inverse">
+                                                        {% for Department in departments %}
+                                                            {% if Department.id == Employee.Department_ID %}
+                                                                {{ Department.Name }}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </span></td>
+                                                    <td>{{ Employee.Age }}</td>
+                                                    <td>{{ Employee.Phone_no }}</td>
+                                                    <td>{{ Employee.Address }}</td>
+                                                    <td>{{ Employee.Email_Address }}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete" onclick="toggleIsActive({{ Auth_user.Employee_id }})"><i class="ti-close" aria-hidden="true"></i></button>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            <script>
+                                                var auth_user1 = {};
+                                                {% for Auth_user in auth_user1 %}
+                                                    auth_user1["{{ Auth_user.Employee_id }}"] = {
+                                                        "Is_active": {% if Auth_user.Is_active %}true{% else %}false{% endif %}
+                                                    };
+                                                {% endfor %}
+                                                function toggleIsActive(employeeId) {
+                                                    var authUser = auth_user1[employeeId];
+                                                    if (authUser) {
+                                                        authUser.Is_active = (authUser.Is_active == 1) ? 0 : 1;
+                                                        var labelElement = document.getElementById("is-active-label-" + employeeId);
+                                                        if (labelElement) {
+                                                            labelElement.innerHTML = (authUser.Is_active == 1) ? "Active" : "Stop";
+                                                        }
+                                                    }
+                                                }
+                                            </script>
                                         </tbody>
                                     </table>
                                 </div>
@@ -692,10 +262,6 @@
                                             xhr.send(formData);
                                         });
                                     </script>
-                                    <a href="javascript:void(0)" class="list-group-item">
-                                        <span class="badge badge-danger m-r-10"><i class="ti-trash"></i></span> Delete All Contacts
-                                    </a>
-
                                 </div>
                             </div>
                         </div>
