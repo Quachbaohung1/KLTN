@@ -200,7 +200,34 @@ class core:
             cur.commit()
             status='successfully check out'
             return status
-        
+    
+    def get_ava_image_ggdrive(eid,service):
+        image_file_name = eid+'.jpg'
+
+        # Search for the image file inside the folder
+        results = service.files().list(
+            q=f"'{core.drive_folder_id()}' in parents and name = '{image_file_name}' and trashed=false",
+            fields="files(id)"
+        ).execute()
+
+        # Get the image file ID
+        try:
+            file_id = results['files'][0]['id']
+        except:
+            out='no face in database'
+            return out
+
+        # Read the image file content
+        request = service.files().get_media(fileId=file_id)
+        fh = io.BytesIO()
+        downloader = io.BytesIO()
+        downloader.write(request.execute())
+        downloader.seek(0)
+        img_array = np.asarray(bytearray(downloader.read()), dtype=np.uint8)
+        img_val = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+        rgb_img = cv2.cvtColor(img_val, cv2.COLOR_BGR2RGB)
+        return rgb_img
+
     def get_check_in_name(eid,check):
         # datetime object containing current date and time
         now = datetime.now()
