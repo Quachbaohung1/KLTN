@@ -235,3 +235,25 @@ class core:
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         combined=eid+check+dt_string+'.jpg'
         return combined
+    
+    def fill_info(eid,service,cur):
+        cur.execute('SELECT CASE WHEN COUNT(*) = COUNT(FirstName) AND COUNT(*) = COUNT(LastName) AND COUNT(*) = COUNT(RoleID) AND COUNT(*) = COUNT(Department_ID) AND COUNT(*) = COUNT(Age) AND COUNT(*) = COUNT(Phone_no) AND COUNT(*) = COUNT(Address) AND COUNT(*) = COUNT(Email_Address) AND COUNT(*) = COUNT(Created_at) AND COUNT(*) = COUNT(Updated_at) THEN TRUE ELSE FALSE END AS AllNotNull FROM Employee WHERE id = %s;',(eid,))
+        check = cur.fetchone()
+        check=int(check['COUNT'])
+        if check==0:
+            return False
+        else:
+            image_file_name = str(eid)+'.jpg'
+
+            # Search for the image file inside the folder
+            results = service.files().list(
+                q=f"'{core.drive_folder_id()}' in parents and name = '{image_file_name}' and trashed=false",
+                fields="files(id)"
+            ).execute()
+
+            # Get the image file ID
+            try:
+                file_id = results['files'][0]['id']
+                return True
+            except:
+                return False
