@@ -95,13 +95,7 @@
                 </a>
             </li><!-- End Time Page Nav -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/login/register">
-                    <i class="bi bi-card-list"></i>
-                    <span>Register</span>
-                </a>
-            </li><!-- End Register Page Nav -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/login/users">
+                <a class="nav-link collapsed" href="/login/users_manager">
                     <i class="bi bi-person-plus"></i>
                     <span>User</span>
                 </a>
@@ -204,7 +198,7 @@
                                                             var formData = new FormData();
                                                             formData.append("file", file);
                                                             var xhr = new XMLHttpRequest();
-                                                            xhr.open("POST", "/api/uploadimg");
+                                                            xhr.open("POST", "/login/profile/upload-image");
                                                             xhr.onreadystatechange = function() {
                                                                 if (xhr.readyState === 4) {
                                                                     if (xhr.status === 200) {

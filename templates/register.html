@@ -87,62 +87,6 @@
                                             </select>
                                             <div class="invalid-feedback">Please select a Department!</div>
                                         </div>
-                                        <!--<div class="col-12">
-                                            <label for="yourImage" class="form-label">Upload Image</label>
-                                            <input type="file" name="image" class="form-control" id="yourImage" required>
-                                            <div class="invalid-feedback">Please upload an image!</div>
-                                            <div id="preview"></div>
-                                        </div>
-                                        <script>
-                                            // Set the maximum size of the preview image
-                                            const maxDimension = 400;
-                                            // Get the input element
-                                            const inputElement = document.getElementById("yourImage");
-                                            // Add an event listener to execute when a file is selected
-                                            inputElement.addEventListener("change", function() {
-                                                // Get the selected file
-                                                const file = inputElement.files[0];
-                                                // Check if a file was selected
-                                                if (file) {
-                                                    // Create a new FileReader object
-                                                    const reader = new FileReader();
-                                                    // Set the onload event handler
-                                                    reader.onload = function() {
-                                                        // Create a new image element
-                                                        const image = new Image();
-                                                        // Set the source of the image element to the contents of the file
-                                                        image.src = reader.result.toString();
-                                                        // Set the maximum size of the image
-                                                        image.onload = function() {
-                                                            const canvas = document.createElement("canvas");
-                                                            let width = image.width;
-                                                            let height = image.height;
-                                                            if (width > height) {
-                                                                if (width > maxDimension) {
-                                                                    height *= maxDimension / width;
-                                                                    width = maxDimension;
-                                                                }
-                                                            } else {
-                                                                if (height > maxDimension) {
-                                                                    width *= maxDimension / height;
-                                                                    height = maxDimension;
-                                                                }
-                                                            }
-                                                            canvas.width = maxDimension;
-                                                            canvas.height = maxDimension;
-                                                            const ctx = canvas.getContext("2d");
-                                                            ctx.drawImage(image, (maxDimension - width) / 2, (maxDimension - height) / 2, width, height);
-                                                            // Add the image element to the preview element
-                                                            const preview = document.getElementById("preview");
-                                                            preview.innerHTML = "";
-                                                            preview.appendChild(canvas);
-                                                        };
-                                                    };
-                                                    // Read the contents of the file
-                                                    reader.readAsDataURL(file);
-                                                }
-                                            });
-                                        </script>-->
                                         <div class="col-12">
                                             <button class="btn btn-primary w-100" type="submit">Create Account</button>
                                         </div>
