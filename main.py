@@ -303,7 +303,6 @@ def load_users():
     username = session.get('username')  # Lấy tên người dùng từ session
     user_id = session.get('id')
 
-
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute('SELECT * FROM Auth_user WHERE id = %s AND username = %s', (user_id, username,))
     auth_user = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
@@ -311,7 +310,7 @@ def load_users():
     cursor.execute('SELECT * FROM Employee WHERE id = %s', (user_id,))
     employee = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
 
-    cursor.execute('SELECT * FROM Employee')
+    cursor.execute("SELECT Employee.* FROM Employee")
     employee1 = cursor.fetchall()
 
     cursor.execute('SELECT * FROM Department')
@@ -441,6 +440,21 @@ def upload_contacts():
         return jsonify({'success': True, 'message': 'File uploaded and processed successfully.'})
     else:
         return jsonify({'success': False, 'message': 'Invalid file or file format.'})
+
+@app.route('/update-status', methods=['POST'])
+def update_status():
+    data = request.get_json()
+    employee_id = data.get('employeeId')
+    current_status = data.get('currentStatus')
+
+    # Thực hiện cập nhật trạng thái trong cơ sở dữ liệu tại đây
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE Auth_user SET Is_active = %s WHERE Employee_id = %s", (current_status, employee_id))
+    mysql.connection.commit()
+
+    # Trả về phản hồi thành công
+    return jsonify({'message': 'Status updated successfully'})
+
 
 if __name__ == "__main__":
     app.run(debug=True)

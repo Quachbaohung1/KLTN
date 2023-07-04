@@ -125,12 +125,12 @@ class core:
     def upload_check_in_image(eid,img,service,check):
         # resize image
         resized = core.preprocess_image(img)
-        cv2.imwrite('holder.jpg', resized, [cv2.IMWRITE_JPEG_QUALITY, 100])
+        cv2.imwrite('holder.jpeg', resized, [cv2.IMWRITE_JPEG_QUALITY, 100])
         image_id=core.get_check_in_name(eid,check)
 
         file_metadata = {'name': image_id,
                         'parents' :[core.checkin_drive_folder_id()]}
-        media = MediaFileUpload('holder.jpg',
+        media = MediaFileUpload('holder.jpeg',
                                 mimetype='image/jpeg')
         # pylint: disable=maybe-no-member
         file = service.files().create(body=file_metadata, media_body=media,

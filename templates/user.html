@@ -127,7 +127,7 @@
             <div class="content-wrapper">
                 <div class="row">
                     <!-- Column -->
-                    <div class="col-lg-8 col-xl-9 col-md-9">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex no-block align-items-center m-b-30">
@@ -153,8 +153,8 @@
                                                 <tr>
                                                     <td>
                                                         <div class="custom-control custom-checkbox">
-                                                            <input type="checkbox" class="custom-control-input" id="customControlValidation2" required>
-                                                            <label class="custom-control-label" for="customControlValidation2"></label>
+                                                            <input type="checkbox" class="custom-control-input" id="customControlValidation{{ Employee.id }}" required>
+                                                            <label class="custom-control-label" for="customControlValidation{{ Employee.id }}"></label>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -171,97 +171,75 @@
                                                     <td>
                                                         <a><img src="{{ url_for('static',filename='assets/images/users/2.jpg') }}" alt="user" class="rounded-circle" width="30" /> {{ Employee.FirstName }} {{ Employee.LastName }}</a>
                                                     </td>
-                                                    <td><span class="label label-inverse">
-                                                        {% for Department in departments %}
-                                                            {% if Department.id == Employee.Department_ID %}
-                                                                {{ Department.Name }}
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    </span></td>
+                                                    <td>
+                                                        <span class="label label-inverse">
+                                                            {% for Department in departments %}
+                                                                {% if Department.id == Employee.Department_ID %}
+                                                                    {{ Department.Name }}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </span>
+                                                    </td>
                                                     <td>{{ Employee.Age }}</td>
                                                     <td>{{ Employee.Phone_no }}</td>
                                                     <td>{{ Employee.Address }}</td>
                                                     <td>{{ Employee.Email_Address }}</td>
                                                     <td>
-                                                        <button type="button" class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" data-toggle="tooltip" data-original-title="Delete" onclick="toggleIsActive({{ Auth_user.Employee_id }})"><i class="ti-close" aria-hidden="true"></i></button>
+                                                        <button id="change-status-btn-{{ Employee.id }}" class="btn btn-sm btn-icon btn-pure btn-outline change-status-btn" data-employee-id="{{ Employee.id }}" data-is-active="{{ Auth_user.Is_active }}">
+                                                            Change
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
                                             <script>
-                                                var auth_user1 = {};
-                                                {% for Auth_user in auth_user1 %}
-                                                    auth_user1["{{ Auth_user.Employee_id }}"] = {
-                                                        "Is_active": {% if Auth_user.Is_active %}true{% else %}false{% endif %}
-                                                    };
-                                                {% endfor %}
-                                                function toggleIsActive(employeeId) {
-                                                    var authUser = auth_user1[employeeId];
-                                                    if (authUser) {
-                                                        authUser.Is_active = (authUser.Is_active == 1) ? 0 : 1;
-                                                        var labelElement = document.getElementById("is-active-label-" + employeeId);
-                                                        if (labelElement) {
-                                                            labelElement.innerHTML = (authUser.Is_active == 1) ? "Active" : "Stop";
+                                                const buttons = Array.from(document.getElementsByClassName("change-status-btn"));
+                                                buttons.forEach(function(button) {
+                                                    button.addEventListener("click", function() {
+                                                        const employeeId = this.getAttribute("data-employee-id");
+                                                        console.log(employeeId);
+                                                        const currentStatus = this.dataset.isActive;
+                                                        console.log(currentStatus);
+
+                                                        // Đảo ngược giá trị currentStatus
+                                                        var newStatus;
+                                                        if (currentStatus === "0") {
+                                                            newStatus = "1"; // Đổi từ 0 thành 1
+                                                        } else if (currentStatus === "1") {
+                                                            newStatus = "0"; // Đổi từ 1 thành 0
                                                         }
-                                                    }
-                                                }
+
+                                                        // Tạo đối tượng dữ liệu để gửi đến máy chủ
+                                                        var data = {
+                                                            employeeId: employeeId,
+                                                            currentStatus: newStatus
+                                                        };
+
+                                                        // Tạo yêu cầu AJAX
+                                                        const xhr = new XMLHttpRequest();
+                                                        xhr.open("POST", "/update-status", true);
+                                                        xhr.setRequestHeader("Content-Type", "application/json");
+
+                                                        // Xử lý sự kiện khi yêu cầu hoàn thành
+                                                        xhr.onload = function() {
+                                                            if (xhr.status === 200) {
+                                                                // Xử lý kết quả từ máy chủ (nếu cần)
+                                                                var response = JSON.parse(xhr.responseText);
+                                                                console.log(response);
+                                                                // Tải lại trang sau khi hoàn thành cập nhật
+                                                                //location.reload();
+                                                            } else {
+                                                                // Xử lý lỗi (nếu có)
+                                                                console.error('Error:', xhr.status);
+                                                            }
+                                                        };
+
+                                                        // Gửi yêu cầu cập nhật đến máy chủ
+                                                        xhr.send(JSON.stringify(data));
+                                                    });
+                                                });
                                             </script>
                                         </tbody>
                                     </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Column -->
-                    <div class="col-lg-4 col-xl-3 col-md-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title m-t-30">Functional</h4>
-                                <div class="list-group">
-                                    <a href="javascript:void(0)" class="list-group-item" id="importButton">
-                                        <span class="badge badge-info m-r-10"><i class="ti-import"></i></span> Import Contacts
-                                    </a>
-                                    <input type="file" id="upload-input" style="display: none;">
-                                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
-                                    <script>
-                                        document.getElementById("importButton").addEventListener("click", function() {
-                                            event.preventDefault();
-                                            document.getElementById("upload-input").click();
-                                        });
-                                        document.getElementById("upload-input").addEventListener("change", function() {
-                                            var file = this.files[0];
-                                            var formData = new FormData();
-                                            formData.append("file", file);
-                                            var xhr = new XMLHttpRequest();
-                                            xhr.open("POST", "/login/users/upload_contacts");
-                                            xhr.onreadystatechange = function() {
-                                                if (xhr.readyState === 4) {
-                                                    if (xhr.status === 200) {
-                                                        var response = JSON.parse(xhr.responseText);
-                                                        if (response.success) {
-                                                            Swal.fire({
-                                                                icon: 'success',
-                                                                title: 'Upload successful!',
-                                                                text: 'The file has been uploaded and processed successfully.'
-                                                            });
-                                                        } else {
-                                                            Swal.fire({
-                                                                icon: 'error',
-                                                                title: 'Upload failed',
-                                                                text: 'An error occurred while uploading the file. Please try again.'
-                                                            });
-                                                        }
-                                                    } else {
-                                                        Swal.fire({
-                                                                icon: 'error',
-                                                                title: 'Upload failed',
-                                                                text: 'An error occurred while uploading the file. Please try again.'
-                                                            });
-                                                    }
-                                                }
-                                            };
-                                            xhr.send(formData);
-                                        });
-                                    </script>
                                 </div>
                             </div>
                         </div>
