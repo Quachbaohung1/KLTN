@@ -10,6 +10,7 @@ from core import core
 import numpy as np
 import cv2
 import threading
+import shutil
 
 service=core.create_service()
 
@@ -99,6 +100,13 @@ def home():
     username = session.get('username')  # Lấy tên người dùng từ session
     user_id = session.get('id')
 
+    try:
+        ava_img = core.get_ava_image_ggdrive(user_id, service)
+        cv2.imwrite('ava.jpg', ava_img, [cv2.IMWRITE_JPEG_QUALITY, 100])
+        move_file('ava.jpg', 'static/img/ava.jpg')
+    except:
+        replace_file_with_copy('static/img/21.jpg', 'static/img/ava.jpg')
+
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute('SELECT * FROM Auth_user WHERE id = %s AND username = %s', (user_id, username,))
     auth_user = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
@@ -126,15 +134,22 @@ def home():
     # Người dùng không có quyền truy cập vào màn hình này hoặc chưa đăng nhập
     abort(403)
 
+def move_file(source_path, destination_path):
+    shutil.move(source_path, destination_path)
+
+def replace_file_with_copy(source_file, destination_file):
+    shutil.copy2(source_file, destination_file)
+
 @app.route('/login/profile', methods=['GET', 'POST'])
 def profile():
     # Check if user is logged-in
     if 'loggedin' in session:
 
-
         # We need all the account info for the user, so we can display it on the profile page
         username = session.get('username')  # Lấy tên người dùng từ session
         user_id = session.get('id')
+
+
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM Auth_user WHERE id = %s AND username = %s', (user_id, username,))
@@ -392,7 +407,7 @@ def get_managed_employees(manager_id):
 def max_length(list1, list2):
     return max(len(list1), len(list2))
 @app.route('/login/time')
-def calendar():
+def time():
     username = session.get('username')  # Lấy tên người dùng từ session
     user_id = session.get('id')
 

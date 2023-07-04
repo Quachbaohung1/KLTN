@@ -202,7 +202,7 @@ class core:
             return status
     
     def get_ava_image_ggdrive(eid,service):
-        image_file_name = eid+'.jpg'
+        image_file_name = str(eid)+'.jpg'
 
         # Search for the image file inside the folder
         results = service.files().list(
@@ -225,8 +225,8 @@ class core:
         downloader.seek(0)
         img_array = np.asarray(bytearray(downloader.read()), dtype=np.uint8)
         img_val = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
-        rgb_img = cv2.cvtColor(img_val, cv2.COLOR_BGR2RGB)
-        return rgb_img
+        #rgb_img = cv2.cvtColor(img_val, cv2.COLOR_RGB2BGR)
+        return img_val
 
     def get_check_in_name(eid,check):
         # datetime object containing current date and time

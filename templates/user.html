@@ -42,7 +42,7 @@
             <ul class="d-flex align-items-center">
                 <li class="nav-item dropdown pe-3">
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="{{ url_for('static', filename='img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
+                        <img src="{{ url_for('static', filename='img/ava.jpg') }}" alt="Profile" class="rounded-circle">
                         <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth_user.username }}</span>
                     </a>
                     <!-- End Profile Iamge Icon -->
@@ -169,7 +169,7 @@
                                                         {% endfor %}
                                                     </td>
                                                     <td>
-                                                        <a><img src="{{ url_for('static',filename='assets/images/users/2.jpg') }}" alt="user" class="rounded-circle" width="30" /> {{ Employee.FirstName }} {{ Employee.LastName }}</a>
+                                                        <a>{{ Employee.FirstName }} {{ Employee.LastName }}</a>
                                                     </td>
                                                     <td>
                                                         <span class="label label-inverse">
