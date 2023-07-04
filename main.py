@@ -6,6 +6,12 @@ import pandas as pd
 import hashlib
 from datetime import datetime, timedelta
 from werkzeug.utils import secure_filename
+from core import core
+import numpy as np
+import cv2
+
+service=core.create_service()
+
 
 app = Flask(__name__)
 
@@ -279,6 +285,18 @@ def register():
         pass
     # Show registration form with message (if any)
     return render_template('register.html', roles=roles, departments=departments, msg=msg)
+
+# Upload employee image to employee image database
+@app.route('/api/uploadimg', methods=['POST'])
+def uploadimg():
+    file = request.files['image']
+    eid=str(request.form['eid'])
+    # Read the image via file.stream
+    image = np.asarray(bytearray(file.read()), dtype="uint8")
+    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    height, width, channels = image.shape
+    out=core.upload_image(eid,image,service)
+    return jsonify({'msg': 'success', 'size': [width, height],'eid':eid,'drive_id':out})
 
 @app.route('/login/users')
 def load_users():
