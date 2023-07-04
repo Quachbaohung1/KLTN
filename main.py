@@ -73,8 +73,11 @@ def login():
                     session['id'] = account['id']
                     session['username'] = account['username']
                     session['RoleID'] = account['RoleID']  # Lưu trữ vai trò của người dùng
+
+
                     # Redirect to home page
                     return redirect(url_for('home'))
+
                 else:
                     # Increment failed login attempts
                     failed_login_attempts += 1
@@ -100,6 +103,15 @@ def home():
     username = session.get('username')  # Lấy tên người dùng từ session
     user_id = session.get('id')
 
+    x = 0
+
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    if core.fill_info(user_id, service, cursor) == False:
+        x = 1
+
+
+
     try:
         ava_img = core.get_ava_image_ggdrive(user_id, service)
         cv2.imwrite('ava.jpg', ava_img, [cv2.IMWRITE_JPEG_QUALITY, 100])
@@ -107,7 +119,7 @@ def home():
     except:
         replace_file_with_copy('static/img/21.jpg', 'static/img/ava.jpg')
 
-    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
     cursor.execute('SELECT * FROM Auth_user WHERE id = %s AND username = %s', (user_id, username,))
     auth_user = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
 
@@ -121,15 +133,15 @@ def home():
         if role_id == 3:
             # Người dùng đã đăng nhập và có vai trò admin
             # Thực hiện các tác vụ tương ứng với màn hình dashboard của admin
-            return render_template('admin_home.html', Auth_user=auth_user, Employee=employee)
+            return render_template('admin_home.html', Auth_user=auth_user, Employee=employee, check=x)
         elif role_id == 1:
             # Người dùng đã đăng nhập và có vai trò user
             # Thực hiện các tác vụ tương ứng với màn hình dashboard của user
-            return render_template('user_home.html', Auth_user=auth_user, Employee=employee)
+            return render_template('user_home.html', Auth_user=auth_user, Employee=employee, check=x)
         elif role_id == 2:
             # Người dùng đã đăng nhập và có vai trò manager
             # Thực hiện các tác vụ tương ứng với màn hình dashboard của manager
-            return render_template('manager_home.html', Auth_user=auth_user, Employee=employee)
+            return render_template('manager_home.html', Auth_user=auth_user, Employee=employee, check=x)
 
     # Người dùng không có quyền truy cập vào màn hình này hoặc chưa đăng nhập
     abort(403)
@@ -345,7 +357,7 @@ def load_users():
             # Người dùng đã đăng nhập và có vai trò admin
             # Thực hiện các tác vụ tương ứng với màn hình dashboard của admin
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM Auth_user WHERE id = %s AND username = %s', (user_id, username,))
+            cursor.execute('SELECT * FROM Auth_user WHERE id = %s', (user_id,))
             auth_user = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
 
             cursor.execute('SELECT * FROM Employee WHERE id = %s', (user_id,))
@@ -357,7 +369,7 @@ def load_users():
             cursor.execute('SELECT * FROM Department')
             departments = cursor.fetchall()
 
-            cursor.execute('SELECT * FROM Auth_user')
+            cursor.execute('SELECT Auth_user.* FROM Auth_user')
             auth_user1 = cursor.fetchall()  # Lấy dòng đầu tiên từ kết quả truy vấn
 
             cursor.close()
@@ -528,10 +540,18 @@ def upload_contacts():
 def update_status():
     data = request.get_json()
     employee_id = data.get('employeeId')
-    current_status = data.get('currentStatus')
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT Is_active AS a FROM Auth_user WHERE Employee_id = %s", (employee_id,))
+    resole = cur.fetchone()
+    current_status = int(resole[0])
+    if current_status == 1:
+        current_status = 0
+    elif current_status == 0:
+        current_status = 1
 
     # Thực hiện cập nhật trạng thái trong cơ sở dữ liệu tại đây
-    cur = mysql.connection.cursor()
+
     cur.execute("UPDATE Auth_user SET Is_active = %s WHERE Employee_id = %s", (current_status, employee_id))
     mysql.connection.commit()
 

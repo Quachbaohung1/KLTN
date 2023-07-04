@@ -108,6 +108,26 @@
         </ul>
     </aside><!-- End Sidebar-->
     <main id="main" class="main">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            var check = "{{ check }}" ;
+            if (check.toString() == '1' ){
+                Swal.fire({
+                    text: "Bạn phải xác nhận đầy đủ thông tin cho lần đăng nhập đầu tiên",
+                    icon: "info",
+                    showCancelButton: false,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false
+                }).then((result) => {
+                // Khi người dùng nhấn nút OK
+                    if (result.isConfirmed) {
+                        // Hoặc chuyển hướng đến một trang khác
+                        window.location.href = "/login/profile";
+                }
+            });
+            } // JavaScript để hiển thị thông báo
+
+        </script>
         <div class="pagetitle">
             <h1>Dashboard</h1>
             <nav>
