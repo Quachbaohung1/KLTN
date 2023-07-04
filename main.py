@@ -9,6 +9,7 @@ from werkzeug.utils import secure_filename
 from core import core
 import numpy as np
 import cv2
+import threading
 
 service=core.create_service()
 
@@ -27,6 +28,12 @@ app.config['ALLOWED_EXTENSIONS'] = {'csv', 'xlsx', 'xls'}
 
 # Intialize MySQL
 mysql = MySQL(app)
+
+
+def get_file_update_time(file_path):
+    timestamp = os.path.getmtime(file_path)
+    update_time = datetime.fromtimestamp(timestamp)
+    return update_time
 
 # Định nghĩa các tuyến đường và phân quyền
 @app.route('/login/', methods=["GET", "POST"])
@@ -123,6 +130,8 @@ def home():
 def profile():
     # Check if user is logged-in
     if 'loggedin' in session:
+
+
         # We need all the account info for the user, so we can display it on the profile page
         username = session.get('username')  # Lấy tên người dùng từ session
         user_id = session.get('id')
@@ -300,14 +309,14 @@ def register():
 # Upload employee image to employee image database
 @app.route('/api/uploadimg', methods=['POST'])
 def uploadimg():
-    file = request.files['image']
-    eid=str(request.form['eid'])
+    file = request.files['file']
+    eid = str(session.get('id'))
     # Read the image via file.stream
-    image = np.asarray(bytearray(file.read()), dtype="uint8")
-    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
-    height, width, channels = image.shape
-    out=core.upload_image(eid,image,service)
-    return jsonify({'msg': 'success', 'size': [width, height],'eid':eid,'drive_id':out})
+    file = np.asarray(bytearray(file.read()), dtype="uint8")
+    file = cv2.imdecode(file, cv2.IMREAD_COLOR)
+    height, width, channels = file.shape
+    out = core.upload_image(eid,file,service)
+    return jsonify({'msg': 'success', 'size': [width, height], 'eid':eid, 'drive_id':out})
 
 @app.route('/login/users')
 def load_users():
@@ -469,14 +478,13 @@ def chart():
         return render_template('charts-apexcharts.html')
     return redirect(url_for('login'))
 
-
 @app.route('/login/profile/upload-image', methods=['POST'])
 def upload_image():
     file = request.files['file']
     if file:
-        filename = file.filename
-        file.save(os.path.join('static/img', 'holder.jpeg'))
-        new_image_url = f"/static/img/holder.jpeg"
+        filename = 'holder.jpg'
+        file.save(os.path.join('static/img', filename))
+        new_image_url = f"/static/img/{filename}"
         return jsonify({'success': True, 'file_url': new_image_url})
     else:
         return jsonify({'success': False, 'message': 'No file selected.'})
@@ -515,6 +523,14 @@ def update_status():
     # Trả về phản hồi thành công
     return jsonify({'message': 'Status updated successfully'})
 
+def start_server():
+    app.run(host='http://127.0.0.1/', port=5000)
 
 if __name__ == "__main__":
     app.run(debug=True)
+    # Sử dụng threading để chạy hai API cùng lúc
+    t1 = threading.Thread(target=start_server)
+    t2 = threading.Thread(target=start_server)
+
+    t1.start()
+    t2.start()

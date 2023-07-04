@@ -106,20 +106,42 @@ class core:
         # resize image
         resized = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
         return resized
-    
-    def upload_image(eid,img,service):
-        # resize image
+
+    def upload_image(eid, img, service):
+        # Resize image
         resized = core.preprocess_image(img)
         cv2.imwrite('holder.jpg', resized, [cv2.IMWRITE_JPEG_QUALITY, 100])
-        image_id=eid+'.jpg'
-        file_metadata = {'name': image_id,
-                        'parents' :[core.drive_folder_id()]}
-        media = MediaFileUpload('holder.jpg',
-                                mimetype='image/jpeg')
-        # pylint: disable=maybe-no-member
-        file = service.files().create(body=file_metadata, media_body=media,
-                                    fields='id').execute()
-        id=file.get("id")
+        image_id = eid + '.jpg'
+
+        file_metadata = {
+            'name': image_id,
+            'parents': [core.drive_folder_id()]
+        }
+
+        media = MediaFileUpload('holder.jpg', mimetype='image/jpeg')
+
+        # Check if a file with the same name already exists
+        response = service.files().list(q=f"name='{image_id}' and trashed=false").execute()
+        existing_files = response.get('files', [])
+
+        if existing_files:
+            # Update the existing file with the new content
+            file = existing_files[0]
+            request = service.files().update(
+                fileId=file['id'],
+                media_body=media
+            )
+            request.execute()
+            id = file['id']
+        else:
+            # Create a new file
+            file = service.files().create(
+                body=file_metadata,
+                media_body=media,
+                fields='id'
+            ).execute()
+            id = file.get("id")
+
         return id
     
     def upload_check_in_image(eid,img,service,check):
