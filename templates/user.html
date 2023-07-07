@@ -226,13 +226,12 @@
                                                                 var response = JSON.parse(xhr.responseText);
                                                                 console.log(response);
                                                                 // Tải lại trang sau khi hoàn thành cập nhật
-                                                                //location.reload();
+                                                                location.reload();
                                                             } else {
                                                                 // Xử lý lỗi (nếu có)
                                                                 console.error('Error:', xhr.status);
                                                             }
                                                         };
-
                                                         // Gửi yêu cầu cập nhật đến máy chủ
                                                         xhr.send(JSON.stringify(data));
                                                     });

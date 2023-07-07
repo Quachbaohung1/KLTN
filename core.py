@@ -239,7 +239,7 @@ class core:
     def fill_info(eid,service,cur):
         cur.execute('SELECT CASE WHEN COUNT(*) = COUNT(FirstName) AND COUNT(*) = COUNT(LastName) AND COUNT(*) = COUNT(RoleID) AND COUNT(*) = COUNT(Department_ID) AND COUNT(*) = COUNT(Age) AND COUNT(*) = COUNT(Phone_no) AND COUNT(*) = COUNT(Address) AND COUNT(*) = COUNT(Email_Address) AND COUNT(*) = COUNT(Created_at) AND COUNT(*) = COUNT(Updated_at) THEN TRUE ELSE FALSE END AS AllNotNull FROM Employee WHERE id = %s;',(eid,))
         check = cur.fetchone()
-        check=int(check['COUNT'])
+        check=int(check['AllNotNull'])
         if check==0:
             return False
         else:
