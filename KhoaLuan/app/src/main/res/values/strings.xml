@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">KhoaLuan</string>
+    <string name="take_picture">Take picture</string>
+    <string name="Check_in">Check In</string>
+    <string name="Sign_Out">Sign Out</string>
+    <string name="Check_out">Check Out</string>
+    <string name="enter_your_username_amp_password_to_login"><![CDATA[Enter your username & password to login]]></string>
+</resources>
