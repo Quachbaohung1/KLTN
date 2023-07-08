@@ -143,7 +143,7 @@
                 <div class="col-lg-8">
                     <div class="row">
                         <!-- Sales Card -->
-                        <div class="col-xxl-4 col-md-6">
+                        <!--<div class="col-xxl-4 col-md-6">
                             <div class="card info-card sales-card">
                                 <div class="card-body">
                                     <h5 class="card-title">Late</h5>
@@ -158,9 +158,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- End Late Card -->
+                        </div>--><!-- End Late Card -->
                         <!-- Revenue Card -->
-                        <div class="col-xxl-4 col-md-6">
+                        <!--<div class="col-xxl-4 col-md-6">
                             <div class="card info-card revenue-card">
                                 <div class="card-body">
                                     <h5 class="card-title">On Time</h5>
@@ -175,9 +175,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- End On time Card -->
+                        </div>--><!-- End On time Card -->
                         <!-- Customers Card -->
-                        <div class="col-xxl-4 col-xl-12">
+                        <!--<div class="col-xxl-4 col-xl-12">
                             <div class="card info-card customers-card">
                                 <div class="card-body">
                                     <h5 class="card-title">Checked in</h5>
@@ -192,7 +192,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- End Customers Card -->
+                        </div>--><!-- End Customers Card -->
                         <!-- Reports -->
                         <div class="col-12">
                             <div class="card">
@@ -204,14 +204,11 @@
                                         document.addEventListener("DOMContentLoaded", () => {
                                             new ApexCharts(document.querySelector("#reportsChart"), {
                                                 series: [{
-                                                    name: 'Sales',
+                                                    name: 'Late',
                                                     data: [31, 40, 28, 51, 42, 82, 56],
                                                 }, {
-                                                    name: 'Revenue',
+                                                    name: 'On Time',
                                                     data: [11, 32, 45, 32, 34, 52, 41]
-                                                }, {
-                                                    name: 'Customers',
-                                                    data: [15, 11, 32, 18, 9, 24, 11]
                                                 }],
                                                 chart: {
                                                     height: 350,

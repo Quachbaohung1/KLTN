@@ -408,14 +408,6 @@ def load_users_manager():
             return render_template('user_manager.html', Auth_user2=auth_user2, Employee2=employee2, departments1=departments1, Employee3=employee3, auth_user3=auth_user3)
     return redirect(url_for('login'))
 
-# Các hàm hỗ trợ
-def get_managed_employees(manager_id):
-    # Hàm này để lấy danh sách nhân viên do manager quản lý
-    # Thực hiện truy vấn vào cơ sở dữ liệu hoặc xử lý logic tương ứng
-    # và trả về danh sách nhân viên
-    pass
-
-
 def max_length(list1, list2):
     return max(len(list1), len(list2))
 @app.route('/login/time')
@@ -487,14 +479,85 @@ def time():
             # Người dùng đã đăng nhập và có vai trò admin
             # Thực hiện các tác vụ tương ứng với màn hình dashboard của admin
             return render_template('Time.html', Auth_user=auth_user, Employee=employee, Employee1=employee1, departments=departments, events=events, employee_check_ins=employee_check_ins, employee_check_outs=employee_check_outs, late_count=late_count, na_count=na_count, ontime_count=ontime_count, total_contact=total_contact)
-        elif role_id == 1:
-            # Người dùng đã đăng nhập và có vai trò user
-            # Thực hiện các tác vụ tương ứng với màn hình dashboard của user
-            return render_template('Time_user.html', Auth_user=auth_user, Employee=employee, Employee1=employee1, departments=departments, events=events, employee_check_ins=employee_check_ins, employee_check_outs=employee_check_outs, late_count=late_count, na_count=na_count, ontime_count=ontime_count, total_contact=total_contact)
+
         elif role_id == 2:
             # Người dùng đã đăng nhập và có vai trò manager
             # Thực hiện các tác vụ tương ứng với màn hình dashboard của manager
             return render_template('Time_manager.html', Auth_user=auth_user, Employee=employee, Employee1=employee1, departments=departments, events=events, employee_check_ins=employee_check_ins, employee_check_outs=employee_check_outs, late_count=late_count, na_count=na_count, ontime_count=ontime_count, total_contact=total_contact)
+
+    return redirect(url_for('login'))
+
+def max_length(list1, list2):
+    return max(len(list1), len(list2))
+@app.route('/login/time_user')
+def time_user():
+    username = session.get('username')  # Lấy tên người dùng từ session
+    user_id = session.get('id')
+
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM Auth_user WHERE id = %s AND username = %s', (user_id, username,))
+    auth_user = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
+
+    cursor.execute('SELECT * FROM Employee WHERE id = %s', (user_id,))
+    employee = cursor.fetchone()  # Lấy dòng đầu tiên từ kết quả truy vấn
+
+    cursor.execute('SELECT * FROM Employee')
+    employee1 = cursor.fetchall()
+
+    cursor.execute('SELECT * FROM Department')
+    departments = cursor.fetchall()
+
+    cursor.execute('SELECT * FROM Event WHERE Employee_ID = %s', (user_id,))
+    events = cursor.fetchall()
+
+    cursor.close()
+
+    employee_check_ins = {}
+    employee_check_outs = {}
+
+    for employee in employee1:
+        employee_id = employee['id']
+        employee_check_ins[employee_id] = []
+        employee_check_outs[employee_id] = []
+
+    for event in events:
+        employee_id = event['Employee_ID']
+        event_type_id = event['Event_Type_ID']
+        if event_type_id == 1:
+            employee_check_ins[employee_id].append(event)
+        elif event_type_id == 2:
+            employee_check_outs[employee_id].append(event)
+        elif event_type_id == 3:
+            employee_check_outs[employee_id].append(event)
+
+    late_count = 0
+    for employee_id, check_ins in employee_check_ins.items():
+        for check_in in check_ins:
+            if check_in['Event_Time'].hour > 8:
+                late_count += 1
+    ontime_count = 0
+    for employee_id, check_ins in employee_check_ins.items():
+        for check_in in check_ins:
+            if check_in['Event_Time'].hour <= 8:
+                ontime_count += 1
+    na_count = 0
+    for employee_id, check_ins in employee_check_ins.items():
+        check_outs = employee_check_outs.get(employee_id, [])
+        max_length = max(len(check_ins), len(check_outs))
+        for i in range(max_length):
+            if i >= len(check_ins) or i >= len(check_outs):
+                na_count += 1
+    total_contact = 0
+    for employee_id, check_ins in employee_check_ins.items():
+        total_contact += len(check_ins)
+
+    # Check if user is logged-in
+    if 'loggedin' in session:
+        role_id = session.get('RoleID')
+        if role_id == 1:
+            # Người dùng đã đăng nhập và có vai trò user
+            # Thực hiện các tác vụ tương ứng với màn hình dashboard của user
+            return render_template('Time_user.html', Auth_user=auth_user, Employee=employee, Employee1=employee1, departments=departments, events=events, employee_check_ins=employee_check_ins, employee_check_outs=employee_check_outs, late_count=late_count, na_count=na_count, ontime_count=ontime_count, total_contact=total_contact)
 
     return redirect(url_for('login'))
 
