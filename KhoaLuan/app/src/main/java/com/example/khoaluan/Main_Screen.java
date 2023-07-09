@@ -155,7 +155,7 @@ public class Main_Screen  extends AppCompatActivity {
                                 Bitmap originalBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(photoUri), null, options);
 
                                 Matrix matrix = new Matrix();
-                                matrix.postRotate(-90); // Rotate by 90 degrees
+                                matrix.postRotate(90); // Rotate by 90 degrees
 
                                 imageBitmap = Bitmap.createBitmap(originalBitmap, 0, 0, originalBitmap.getWidth(), originalBitmap.getHeight(), matrix, true);
 
@@ -164,6 +164,7 @@ public class Main_Screen  extends AppCompatActivity {
                                 imageView.setVisibility(View.VISIBLE);
                                 confirm_image_btn.setVisibility(View.VISIBLE);
                                 checkInButton.setText("Retake Image");
+                                success = 0;
                             } catch (IOException e) {
                                 // Handle error here
                                 Log.e(TAG, "Error reading bitmap", e);
@@ -196,7 +197,7 @@ public class Main_Screen  extends AppCompatActivity {
             public void onClick(View v) {
                 confirmloadingwait(loadingIndicator,buttonlayout);
                 if(success==1){
-                    combined="You have Already "+check;
+                    combined="You have Already "+check+" with this user";
                     Toast.makeText(Main_Screen.this, combined, Toast.LENGTH_SHORT).show();
                     confirmloadingfinish(loadingIndicator,buttonlayout);
                     return;
@@ -213,12 +214,14 @@ public class Main_Screen  extends AppCompatActivity {
                             String width= jsonResponse.getString("width");
                             String height = jsonResponse.getString("height");
                             String result = jsonResponse.getString("status");
-                            success = Integer.parseInt(jsonResponse.getString("check"));
-                            combined = "Width: " + width + ", Height: " + height+", status: "+result;
+                            String ManagerId = jsonResponse.getString("manager_Id");
+                            String customerId = jsonResponse.getString("customer_id_recognize");
+                            combined = ", status: "+result+", manager_Id: "+ManagerId+", customerId: "+customerId;
                             if (msg.equals("success")) {
                                 runOnUiThread(() -> {
                                     // Show an error message, e.g., using a Toast
                                     Toast.makeText(Main_Screen.this, combined, Toast.LENGTH_SHORT).show();
+                                    success = 1;
                                     confirmloadingfinish(loadingIndicator,buttonlayout);
                                 });
                             } else {
