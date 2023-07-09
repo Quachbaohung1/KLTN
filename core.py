@@ -237,7 +237,7 @@ class core:
         return combined
     
     def fill_info(eid,service,cur):
-        cur.execute('SELECT CASE WHEN COUNT(*) = COUNT(FirstName) AND COUNT(*) = COUNT(LastName) AND COUNT(*) = COUNT(RoleID) AND COUNT(*) = COUNT(Department_ID) AND COUNT(*) = COUNT(Age) AND COUNT(*) = COUNT(Phone_no) AND COUNT(*) = COUNT(Address) AND COUNT(*) = COUNT(Email_Address) AND COUNT(*) = COUNT(Created_at) AND COUNT(*) = COUNT(Updated_at) THEN TRUE ELSE FALSE END AS AllNotNull FROM Employee WHERE id = %s;',(eid,))
+        cur.execute('SELECT CASE WHEN COUNT(*) = COUNT(e.FirstName) AND COUNT(*) = COUNT(e.LastName) AND COUNT(*) = COUNT(a.RoleID) AND COUNT(*) = COUNT(e.Department_ID) AND COUNT(*) = COUNT(e.Age) AND COUNT(*) = COUNT(e.Phone_no) AND COUNT(*) = COUNT(e.Address) AND COUNT(*) = COUNT(Email_Address) AND COUNT(*) = COUNT(e.Created_at) AND COUNT(*) = COUNT(e.Updated_at) THEN TRUE ELSE FALSE END AS AllNotNull FROM Employee e left join Auth_user a on e.id=a.Employee_id WHERE e.id = %s;',(eid,))
         check = cur.fetchone()
         check=int(check['AllNotNull'])
         if check==0:

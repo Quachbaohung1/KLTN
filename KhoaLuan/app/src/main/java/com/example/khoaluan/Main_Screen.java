@@ -155,7 +155,7 @@ public class Main_Screen  extends AppCompatActivity {
                                 Bitmap originalBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(photoUri), null, options);
 
                                 Matrix matrix = new Matrix();
-                                //matrix.postRotate(90); // Rotate by 90 degrees
+                                matrix.postRotate(-90); // Rotate by 90 degrees
 
                                 imageBitmap = Bitmap.createBitmap(originalBitmap, 0, 0, originalBitmap.getWidth(), originalBitmap.getHeight(), matrix, true);
 

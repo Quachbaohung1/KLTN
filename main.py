@@ -161,7 +161,12 @@ def profile():
         username = session.get('username')  # Lấy tên người dùng từ session
         user_id = session.get('id')
 
-
+        try:
+            ava_img = core.get_ava_image_ggdrive(user_id, service)
+            cv2.imwrite('ava.jpg', ava_img, [cv2.IMWRITE_JPEG_QUALITY, 100])
+            move_file('ava.jpg', 'static/img/ava.jpg')
+        except:
+            replace_file_with_copy('static/img/21.jpg', 'static/img/ava.jpg')
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM Auth_user WHERE id = %s AND username = %s', (user_id, username,))

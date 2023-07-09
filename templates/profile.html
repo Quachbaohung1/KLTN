@@ -328,17 +328,18 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">Change Password</button>
+                                            <button type="submit" class="btn btn-primary" onclick="showNotification()">Change Password</button>
                                         </div>
-                                        {% with messages = get_flashed_messages() %}
-                                            {% if messages %}
-                                                <ul class="flash-messages">
-                                                    {% for message in messages %}
-                                                        <li>{{ message }}</li>
-                                                    {% endfor %}
-                                                </ul>
-                                            {% endif %}
-                                        {% endwith %}
+                                        <script>
+                                            function showNotification() {
+                                                Swal.fire({
+                                                    title: 'Thông báo',
+                                                    text: 'Đã thay đổi mật khẩu!',
+                                                    icon: 'success',
+                                                    confirmButtonText: 'OK'
+                                                });
+                                            }
+                                        </script>
                                     </form><!-- End Change Password Form -->
                                 </div>
                             </div><!-- End Bordered Tabs -->
